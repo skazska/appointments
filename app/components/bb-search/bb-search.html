@@ -1,0 +1,19 @@
+<div class="bb-search">
+    <div class="search-string">
+        <label>
+            Поиск:
+            <input ng-model="searchStr" ng-model-options="{debounce:500}">
+        </label>
+    </div>
+    <div class="search-opts">
+        <div class="search-option" ng-repeat="option in searchOpts" ng-show="option.items.length>0">
+            {{option.name}}:
+            <ul>
+                <li class="search-option-item" ng-repeat="item in option.items">{{item.name}}{{$last?'.':', '}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="search-bb">
+
+    </div>
+</div>
