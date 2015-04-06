@@ -6,10 +6,12 @@
         </label>
     </div>
     <div class="search-opts">
-        <div class="search-option" ng-repeat="option in searchOpts" ng-show="option.items.length>0">
+        <div class="search-option" ng-repeat="(key, option) in searchOpts" >
             {{option.name}}:
             <ul>
-                <li class="search-option-item" ng-repeat="item in option.items">{{item.name}}{{$last?'.':', '}}</li>
+                <li class="search-option-item" ng-repeat="(itemKey, item) in option.items">
+                    {{item}}{{$last?'.':', '}}(<button ng-click="bbSearch.searchOptsDel(key, itemKey)" >)
+                </li>
             </ul>
         </div>
     </div>
