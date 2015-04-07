@@ -5,8 +5,7 @@ angular.module('appointments', [
   'ngRoute',
   'bbSearch',
   'appointments.bb',
-  'myApp.view2',
-  'myApp.version'
+  'myApp.view2'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/bb'});

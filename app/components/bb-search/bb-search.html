@@ -5,16 +5,9 @@
             <input ng-model="searchStr" ng-model-options="{debounce:500}">
         </label>
     </div>
-    <div class="search-opts">
-        <div class="search-option" ng-repeat="(key, option) in searchOpts" >
-            {{option.name}}:
-            <ul>
-                <li class="search-option-item" ng-repeat="(itemKey, item) in option.items">
-                    {{item}}{{$last?'.':', '}}(<button ng-click="bbSearch.searchOptsDel(key, itemKey)" >)
-                </li>
-            </ul>
-        </div>
-    </div>
+    <szs-key-list szs-get-data-fn="searchOpts()" szs-del-fn="searchOptsDel(opt, itm)"
+
+            ></szs-key-list>
     <div class="search-bb">
 
     </div>

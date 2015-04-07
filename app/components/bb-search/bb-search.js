@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('bbSearch.directives', [])
+angular.module('bbSearch', ['szsKeyList'])
   /**
    * @ngdoc directive
    * @name bbSearch
@@ -15,41 +15,36 @@ angular.module('bbSearch.directives', [])
       restrict: 'E',
       transclude: true,
       scope: {
-        searchStr: '@searchStr'
+        searchStr: '@'
       },
       controller: function($scope, $element, $attrs, $transclude){
         var opts = $scope.searchOpts = {OPT:{name:'OPTION', items: {ITM:'item'}}}; //ITM:'item'
 
-        this.searchOpts = function(val){
-          if (!angular.isDefined(val)) { return opts; }
-          else if (val === false) {opts = {}; }
-          else {  opts = val; }
-        }
-
-        this.searchOpt = function(key, val){
-          if (angular.isDefined(key)) {
-            if (!angular.isDefined(val)) { return opts[key]; }
-            else if (val === false) { delete opts[key]; }
-            else { opts[key] = val; }
+        this.searchOptsDel = function(optKey, itemKey) {
+          if (angular.isDefined(optKey)) {
+            if (angular.isDefined(itemKey)) {
+              if (angular.isDefined(opts[optKey].items[itemKey])) delete opts[optKey].items[itemKey];
+            } else {
+              if (angular.isDefined(opts[optKey])) delete opts[optKey];
+            }
           }
         }
 
-        this.searchOptItems = function(key, val){
-          if (angular.isDefined(key)) {
-            if (!angular.isDefined(val)) { return opts[key].items; }
-            else if (val === false) { delete opts[key].items; }
-            else { opts[key].items = val; }
+        this.searchOpts = function(val, optKey, itemKey){
+          if (!angular.isDefined(val)) {
+            if (angular.isDefined(optKey)&&angular.isDefined(itemKey)) return opts[optKey].items[itemKey] || null;
+            if (angular.isDefined(optKey)) return opts[optKey] || null;
+            return opts || null;
+          } else {
+            if (angular.isDefined(optKey)&&angular.isDefined(itemKey)) {
+              opts[optKey].items[itemKey] = val;
+            } else if (angular.isDefined(optKey)) {
+              opts[optKey] = val;
+            } else {
+              opts = val;
+            }
           }
         }
-
-        this.searchOptItem = function(key, item, val){
-          if (angular.isDefined(key)&&angular.isDefined(item)) {
-            if (!angular.isDefined(val)) { return opts[key].items[item]; }
-            else if (val === false) { delete opts[key].items[item]; }
-            else { opts[key].items[item] = val; }
-          }
-        }
-
       },
       controllerAs: 'bbSearch',
       templateUrl: 'components/bb-search/bb-search.html'
@@ -58,8 +53,4 @@ angular.module('bbSearch.directives', [])
 
 ;
 
-angular.module('bbSearch', [
-  'bbSearch.directives'
-])
 
-  .value('version', '0.1');
