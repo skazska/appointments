@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('appointments.bb', ['ngRoute'])
+angular.module('appointments.bb', ['ngRoute', 'szsBbSearch'])
 
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/bb', {
@@ -12,6 +12,8 @@ angular.module('appointments.bb', ['ngRoute'])
     });
   }])
 
-  .controller('bbCtrl', [function() {
+  .controller('bbCtrl', ['$scope', function($scope) {
+
+
 
   }]);
