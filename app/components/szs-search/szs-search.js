@@ -17,8 +17,8 @@ angular.module('szsSearch', ['szsKeyList'])
       scope: {
         searchStr: '=szsSearchStr'
       },
-      controller: function($scope, $element, $attrs, $transclude){
-
+      link: function(scope, elt, attrs, ctrl){
+//        scope.data = scope.szsGetDataFn();
       },
       templateUrl: 'components/szs-search/szs-search.html'
     };

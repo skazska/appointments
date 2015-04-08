@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('szsBbSearch', ['szsSearch', 'szsKeyList'])
+angular.module('szsBbSearch', ['szsSearch', 'szsKeyList', 'szsBoard'])
 
   .directive('szsBbSearch',['$http', function($http){
     return {
@@ -9,13 +9,13 @@ angular.module('szsBbSearch', ['szsSearch', 'szsKeyList'])
         svcUrl: '@',
         searchStr: '@'
       },
-      controller: function ($scope, $element, $attrs, $transclude) {
-        var opts = $scope.szsKeyListData = {OPT:{name:'OPTION', items: {ITM:'item'}}};
-        $http.get($scope.svcUrl).success(function(data) {
-          $scope.szsBoardData = data;
+      link: function(scope, elt, attrs, ctrl){
+        var opts = scope.szsKeyListData = {OPT:{name:'OPTION', items: {ITM:'item'}}};
+        $http.get(scope.svcUrl).success(function(data) {
+          scope.szsBoardData = data;
         });
 
-        $scope.searchOptsDel = function(optKey, itemKey) {
+        scope.searchOptsDel = function(optKey, itemKey) {
           if (angular.isDefined(optKey)) {
             if (angular.isDefined(itemKey)) {
               if (angular.isDefined(opts[optKey].items[itemKey])) {
@@ -28,7 +28,7 @@ angular.module('szsBbSearch', ['szsSearch', 'szsKeyList'])
           }
         };
 
-        $scope.searchOpts = function(val, optKey, itemKey){
+        scope.searchOpts = function(val, optKey, itemKey){
           if (!angular.isDefined(val)) {
             if (angular.isDefined(optKey)&&angular.isDefined(itemKey)) return opts[optKey].items[itemKey] || null;
             if (angular.isDefined(optKey)) return opts[optKey] || null;
@@ -43,11 +43,7 @@ angular.module('szsBbSearch', ['szsSearch', 'szsKeyList'])
             }
           }
         };
-
-
       },
-      controllerAs: 'ctrl',
-      bindToController: true,
       templateUrl: 'components/szs-bb-search/szs-bb-search.html'
     }
   }])
