@@ -5,9 +5,9 @@
             szs-del-fn="searchOptsDel(opt, itm)"
             >
     </szs-key-list>
-    <szs-board-tab szs-board-data="szsBoardData" >
-        <szs-board-pane ng-repeat="cat in szsBoardData">
-
+    <szs-board-tab> <!--szs-board-data="szsBoardData"-->
+        <szs-board-pane ng-repeat="cat in szsBoardData" title="{{cat.title}}">
+            <span class="opt-item" ng-repeat="itm in cat.items">{{itm.title}}</span>
         </szs-board-pane>
     </szs-board-tab>
 </div>

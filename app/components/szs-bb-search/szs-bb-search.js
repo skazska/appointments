@@ -10,7 +10,7 @@ angular.module('szsBbSearch', ['szsSearch', 'szsKeyList', 'szsBoard'])
         searchStr: '@'
       },
       link: function(scope, elt, attrs, ctrl){
-        var opts = scope.szsKeyListData = {OPT:{name:'OPTION', items: {ITM:'item'}}};
+        var opts = scope.szsKeyListData = {OPT:{title:'OPTION', items: {ITM:{title:'item'}}}};
         $http.get(scope.svcUrl).success(function(data) {
           scope.szsBoardData = data;
         });

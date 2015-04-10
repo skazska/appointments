@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "option":"opt2",
+    "title":"Option2",
+    "items":[
+      { "item":"itm1", "title":"Item1" },
+      { "item":"itm2", "title":"Item2" }
+    ]
+  },
+  {
+    "option":"opt1",
+    "title":"Option1",
+    "items":[
+      { "item":"itm3", "title":"Item3" }
+    ]
+  }
+]
