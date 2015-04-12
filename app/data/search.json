@@ -1,8 +1,8 @@
 [
   {
     "option":"opt3",
-    "title":"Option3",
-    "contentType":"option",
+    "title" : "Option3",
+    "contentType" :"option",
     "items":[
       { "item":"itm4", "title":"Item4" },
       { "item":"itm6", "title":"Item6" },

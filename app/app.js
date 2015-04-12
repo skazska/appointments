@@ -3,8 +3,7 @@
 // Declare app level module which depends on views, and components
 angular.module('appointments', [
   'ngRoute',
-  'appointments.bb',
-  'myApp.view2'
+  'appointments.bb'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/bb'});
