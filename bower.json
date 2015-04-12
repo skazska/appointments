@@ -9,6 +9,9 @@
     "angular": "1.2.x",
     "angular-route": "1.2.x",
     "angular-loader": "1.2.x",
+    "bootstrap": "3.x",
+    "angular-ui-bootstrap": "0.12.x",
+    "angular-ui-sortable": "0.12.x",
     "angular-mocks": "~1.2.x",
     "html5-boilerplate": "~4.3.0"
   }

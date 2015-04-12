@@ -1,13 +1,30 @@
 <div class="szs-bb-search" >
-    <szs-search szs-search-str="searchStr" ></szs-search>
+    <div class="szs-search-string">
+        <label>
+            Поиск:
+            <input ng-model="searchStr" ng-model-options="{debounce:500}">
+        </label>
+    </div>
+
     <szs-key-list
             szs-key-list-data="szsKeyListData"
-            szs-del-fn="searchOptsDel(opt, itm)"
             >
     </szs-key-list>
-    <szs-board-tab> <!--szs-board-data="szsBoardData"-->
-        <szs-board-pane ng-repeat="cat in szsBoardData" title="{{cat.title}}">
-            <span class="opt-item" ng-repeat="itm in cat.items">{{itm.title}}</span>
-        </szs-board-pane>
-    </szs-board-tab>
+
+    <div class="szs-bb-search-tabs">
+        <ul ui-sortable="sortOptions" ng-model="szsBoardData">
+            <li ng-repeat="cat in szsBoardData track by cat.option">
+                {{cat.title}}
+            </li>
+        </ul>
+    </div>
+    <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"  title="{{cat.title}}">
+        <span class="opt-item"
+              ng-repeat="itm in cat.items track by itm.item"
+              ng-click="itemClick(cat, itm)"
+              >
+            {{itm.title}}
+        </span>
+    </div>
+
 </div>

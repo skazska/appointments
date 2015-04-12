@@ -1,39 +1,21 @@
 'use strict'
 
+
+
 angular.module('szsBoard', [])
-
-  .directive('szsBoardTab', [function(){
-    return{
-      restrict: 'E',
-      transclude: true,
-      scope: {
-//        data:'=szsBoardData'
-      },
-      controller:function($scope, $element, $attrs, $transclude){
-        var panes = $scope.panes = [];
-
-        this.addPane = function(pane){
-          panes.push(pane);
-        }
-      },
-      controllerAs:'ctrl',
-      bindToController: true,
-      templateUrl:'components/szs-board/szs-board-tab.html'
-    }
-  }])
 
   .directive('szsBoardPane', [function(){
     return{
-      restrict: 'E',
-      require: '^szsBoardTab',
+      restrict: 'A',
+      require: '^szsBbSearch',
       transclude: true,
       scope: {
-        title: '@'
+        title:'@'
       },
-      link: function(scope, elt, attrs, ctrl){
-        ctrl.addPane(scope);
+      link: function (scope, elt, attrs, ctrl){
+        elt.find('.ui-widget-content').resizable({handles:{s:elt.find('.ui-resizable-s')}});
       },
       templateUrl:'components/szs-board/szs-board-pane.html'
     }
 
-  }])
+  }]);

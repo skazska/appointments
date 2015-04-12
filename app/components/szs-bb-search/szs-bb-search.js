@@ -1,48 +1,39 @@
 'use strict'
 
-angular.module('szsBbSearch', ['szsSearch', 'szsKeyList', 'szsBoard'])
+angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
 
-  .directive('szsBbSearch',['$http', function($http){
+  .directive('szsBbSearch',['$http', 'szsKeyList', function($http, szsKeyList){
     return {
       restrict: 'E',
       scope: {
         svcUrl: '@',
         searchStr: '@'
       },
-      link: function(scope, elt, attrs, ctrl){
-        var opts = scope.szsKeyListData = {OPT:{title:'OPTION', items: {ITM:{title:'item'}}}};
-        $http.get(scope.svcUrl).success(function(data) {
-          scope.szsBoardData = data;
+      controller: function($scope, $element, $attrs, $transclude) {
+        var keyList = szsKeyList.init();
+        $scope.szsKeyListData = keyList.opts;
+
+        var board = [];
+        $http.get($scope.svcUrl).success(function(data) {
+          $scope.szsBoardData = board = data;
         });
 
-        scope.searchOptsDel = function(optKey, itemKey) {
-          if (angular.isDefined(optKey)) {
-            if (angular.isDefined(itemKey)) {
-              if (angular.isDefined(opts[optKey].items[itemKey])) {
-                delete opts[optKey].items[itemKey];
-                if (Object.keys(opts[optKey].items).length == 0) delete opts[optKey].items;
-              }
-            } else {
-              if (angular.isDefined(opts[optKey])) delete opts[optKey];
-            }
+        $scope.sortOptions = {
+          axis:'y'
+        };
+
+        $scope.itemClick = function(option, item) {
+          switch (option.contentType) {
+            case 'option':
+              keyList.add(option.option,item.item,option.title,item.title);
+              break;
+            case 'item':
+
+              break;
           }
         };
 
-        scope.searchOpts = function(val, optKey, itemKey){
-          if (!angular.isDefined(val)) {
-            if (angular.isDefined(optKey)&&angular.isDefined(itemKey)) return opts[optKey].items[itemKey] || null;
-            if (angular.isDefined(optKey)) return opts[optKey] || null;
-            return opts || null;
-          } else {
-            if (angular.isDefined(optKey)&&angular.isDefined(itemKey)) {
-              opts[optKey].items[itemKey] = val;
-            } else if (angular.isDefined(optKey)) {
-              opts[optKey] = val;
-            } else {
-              opts = val;
-            }
-          }
-        };
+        this.fltOptsDel = keyList.del;
       },
       templateUrl: 'components/szs-bb-search/szs-bb-search.html'
     }
