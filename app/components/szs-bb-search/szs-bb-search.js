@@ -10,8 +10,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         searchStr: '@'
       },
       controller: function($scope, $element, $attrs, $transclude) {
-        var keyList = szsKeyList.init();
-        $scope.szsKeyListData = keyList.opts;
+        var keyList = szsKeyList();
+        $scope.szsKeyList = keyList;
 
         var board = [];
         $http.get($scope.svcUrl).success(function(data) {
@@ -33,7 +33,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           }
         };
 
-        this.fltOptsDel = keyList.del;
+//        this.fltOptsDel = keyList.del;
       },
       templateUrl: 'components/szs-bb-search/szs-bb-search.html'
     }

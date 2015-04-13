@@ -1,8 +1,11 @@
-<div class="szs-key-list" ng-repeat="(optKey, option) in data" ng-show="option.items">
+<div class="szs-key-list" ng-repeat="(optKey, option) in data.opts" ng-show="option.items">
     {{option.title}}:
     <ul>
         <li class="szs-key-list-item" ng-repeat="(itemKey, item) in option.items" >
-            {{item.title}}<button ng-click="delFn(optKey, itemKey)" >X</button>{{$last?'.':', '}}
+            {{item.title}}
+<!--            <button ng-click="delFn(optKey, itemKey)" >X</button>-->
+            <button ng-click="data.del(optKey, itemKey)" >X</button>
+            {{$last?'.':', '}}
         </li>
     </ul>
 </div>
