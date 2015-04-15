@@ -2,7 +2,7 @@
 
 angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
 
-  .directive('szsBbSearch',['$http', 'szsKeyList', function($http, szsKeyList){
+  .directive('szsBbSearch',['$http', 'szsKeyListData', function($http, szsKeyListData){
     return {
       restrict: 'E',
       scope: {
@@ -10,7 +10,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         searchStr: '@'
       },
       controller: function($scope, $element, $attrs, $transclude) {
-        var keyList = szsKeyList();
+        var keyList = szsKeyListData();
         $scope.szsKeyList = keyList;
 
         var board = [];

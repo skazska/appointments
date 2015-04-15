@@ -4,19 +4,19 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     ngdocs: {
-      options:{
-        dest:"docs"
+      options: {
+        dest: "docs"
       },
-      api:{
+      api: {
         src: ["app/components/**/*.js", "!app/components/**/*test.js"]
       }
     }
   });
 
-  // Load the plugin that provides the "ngdocs" task.
-  grunt.loadNpmTasks('grunt-ngdocs');
+  // Load the plugin that provides the "docular" tasks.
+  grunt.loadNpmTasks('grunt-docular');
 
-  grunt.registerTask('docs', ['ngdocs']);
+  grunt.registerTask('docular', ['docular']);
 
   // Default task(s).
 //  grunt.registerTask('default', ['uglify']);
