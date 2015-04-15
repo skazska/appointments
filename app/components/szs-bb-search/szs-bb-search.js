@@ -1,16 +1,16 @@
-'use strict'
+'use strict';
 
 angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
 
-  .directive('szsBbSearch',['$http', 'szsKeyListData', function($http, szsKeyListData){
+  .directive('szsBbSearch',['$http', 'szsKeyList', function($http, szsKeyList){
     return {
       restrict: 'E',
       scope: {
         svcUrl: '@',
         searchStr: '@'
       },
-      controller: function($scope, $element, $attrs, $transclude) {
-        var keyList = szsKeyListData();
+      controller: function($scope) { //, $element, $attrs, $transclude) {
+        var keyList = szsKeyList();
         $scope.szsKeyList = keyList;
 
         var board = [];

@@ -1,6 +1,3 @@
-/**
- * Created by ska on 4/3/15.
- */
 'use strict';
 
 describe('appointments.bb module', function() {

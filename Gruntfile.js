@@ -8,15 +8,15 @@ module.exports = function(grunt) {
         dest: "docs"
       },
       api: {
-        src: ["app/components/**/*.js", "!app/components/**/*test.js"]
+        src: ["app/components/*/*.js", "!app/components/test/*"]
       }
     }
   });
 
   // Load the plugin that provides the "docular" tasks.
-  grunt.loadNpmTasks('grunt-docular');
+  grunt.loadNpmTasks('grunt-ngdocs');
 
-  grunt.registerTask('docular', ['docular']);
+  grunt.registerTask('docs', ['ngdocs']);
 
   // Default task(s).
 //  grunt.registerTask('default', ['uglify']);

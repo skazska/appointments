@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /**
  * @ngdoc overview
@@ -9,32 +9,29 @@
  */
 angular.module('szsKeyList',[])
 /**
- * @ngdoc service
- * @name szsKeyList
+ * @ngdoc object
+ * @name szsKeyList.szsKeyList
  * @module szsKeyList
  * @description
- * Provides object, containing data for szsKeyList directive and methods to add/delete options/items
+ * Provides function returning an object, containing data for szsKeyList directive and methods to add/delete options/items
+ * property: opts
+ * methods: add, del
  */
-  .factory('szsKeyListData', function (){
+  .factory('szsKeyList', function (){
     return function(){
       var opts = {};
       return {
-        /**
-         * @ngdoc property
-         * @name opts
-         * @description dd
-         */
         opts: opts,
         /**
          * @ngdoc method
          * @name add
-         * @methodOf szsKeyListData
+         * @methodOf szsKeyList.szsKeyList
          * @param {string} optKey - key of the option
          * @param {string} itmKey - key of the item
          * @param {string} optText - text of the option
          * @param {string} itmText - text of the item
          * @description
-         * adds an option and item
+         * adds an option and item,
          * sets the option and item if exists
          */
         add: function(optKey, itmKey, optText, itmText){
@@ -44,12 +41,14 @@ angular.module('szsKeyList',[])
           opts[optKey].items[itmKey] = {title:itmText};
         },
         /**
-         * @method del
+         * @ngdoc method
+         * @name del
+         * @methodOf szsKeyList.szsKeyList
          * @param {string} optKey - key of the option
          * @param {string} itmKey - key of the item
          * @description
          * removes an item of option identified by optKey and itm Key
-         * if no items left removes option
+         * if no items left removes option,
          * if no itmKey provided removes option with all items
          */
         del: function(optKey, itmKey) {
@@ -70,13 +69,13 @@ angular.module('szsKeyList',[])
 
 /**
  * @ngdoc directive
- * @name szsKeyList
+ * @name szsKeyList.szsKeyListPanel
  * @module szsKeyList
  * @restrict 'E'
  * @requires szsBbSearch
  * @param {attribute} szsKeyList - object, returned by szsKeyList service
  */
-  .directive('szsKeyList', [function(){
+  .directive('szsKeyListPanel', [function(){
     return {
       restrict: 'E',
       require: '^szsBbSearch',
@@ -85,7 +84,7 @@ angular.module('szsKeyList',[])
       },
       link: function(scope, elt, attrs, ctrl){
       },
-      templateUrl: 'components/szs-key-list/szs-key-list.html'
+      templateUrl: 'components/szs-key-list/szs-key-list-panel.html'
     }
   }])
 ;
