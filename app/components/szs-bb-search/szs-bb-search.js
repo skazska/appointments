@@ -1,5 +1,14 @@
 'use strict';
 
+/**
+ * @ngdoc overview
+ * @name szsBbSearch
+ * @module szsBbSearch
+ * @description
+ * Provides a directive to create search dashboard, using search input, search options and result dashboard.
+ *
+ * It should request search by search string and options
+ */
 angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
 
   .directive('szsBbSearch',['$http', 'szsKeyList', function($http, szsKeyList){

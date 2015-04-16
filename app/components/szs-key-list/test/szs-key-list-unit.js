@@ -1,9 +1,11 @@
 'use strict';
 
 describe('szsKeyList module', function(){
-  beforeEach(module('szsKeyList'));
   describe('szsKeyList service', function() {
     var srv;
+
+    beforeEach(module('szsKeyList'));
+
     beforeEach(inject(function(szsKeyList){
       srv = szsKeyList();
     }));
@@ -29,20 +31,30 @@ describe('szsKeyList module', function(){
     var $compile,
       $rootScope;
 
+    beforeEach(function(){
+      module('templates');
+      module('szsKeyList');
+    });
+
     beforeEach(inject(function(_$compile_, _$rootScope_){
       $compile = _$compile_;
       $rootScope = _$rootScope_;
     }));
 
-//    it('should replace <szs-key-list-panel> tag with <ul><li> compiled using szsKeyList data set in attr',
-//      inject(function(szsKeyList){
-//        $rootScope.szsKeyList = szsKeyList();
-//        $rootScope.szsKeyList.add('opt','itm','option','item');
-//        var elt = $compile('<div><szs-key-list-panel szs-key-list="szsKeyList"></szs-key-list-panel></div>')($rootScope);
-//        $rootScope.$digest();
-//        expect(elt.html()).toMatch(/.*<div[^>]*szs-key-list.*>*option*<ul>*<li[^>]*szs-key-list-item*>*item*keyList.del*/);
-//      });
-//    );
+    it('should not contain elements if keyList is empty, should contain elements for options and items otherwise',
+      inject(function(szsKeyList){
+        $rootScope.szsKeyList = szsKeyList();
+        var elt = $compile('<szs-key-list-panel szs-key-list="szsKeyList"></szs-key-list-panel>')($rootScope);
+        $rootScope.$digest();
+        expect(elt.html()).not.toMatch(/class.*szs-key-list/);
+        $rootScope.szsKeyList.add('opt','itm','optiontitle','itemtitle');
+        $rootScope.$digest();
+        expect(elt.html().split('optiontitle').length).toBe(2);
+        expect(elt.html().split('itemtitle').length).toBe(2);
+        expect(elt.html()).toMatch(/class.*szs-key-list/);
+        expect(elt.html()).toMatch(/class.*szs-key-list-item/);
+      })
+    );
   });
 
 });

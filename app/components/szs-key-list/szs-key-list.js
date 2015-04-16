@@ -72,13 +72,12 @@ angular.module('szsKeyList',[])
  * @name szsKeyList.szsKeyListPanel
  * @module szsKeyList
  * @restrict 'E'
- * @requires szsBbSearch
  * @param {attribute} szsKeyList - object, returned by szsKeyList service
  */
   .directive('szsKeyListPanel', [function(){
     return {
       restrict: 'E',
-      require: '^szsBbSearch',
+//      require: '^szsBbSearch',
       scope: {
         keyList:'=szsKeyList'
       },

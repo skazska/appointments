@@ -1,13 +1,23 @@
 'use strict'
-
-
-
+/**
+ * @ngdoc overview
+ * @name szsBoard
+ * @module szsBoard
+ * @description
+ * Provides transclude directive to present content in resizable panes. Depends on JQuery ui resizable widget */
 angular.module('szsBoard', [])
 
+/**
+ * @ngdoc directive
+ * @name szsBoard.szsBoardPane
+ * @module szsBoard
+ * @restrict 'E'
+ * @param {attribute} title - text for pane's title
+ */
   .directive('szsBoardPane', [function(){
     return{
       restrict: 'A',
-      require: '^szsBbSearch',
+//      require: '^szsBbSearch',
       transclude: true,
       scope: {
         title:'@'
