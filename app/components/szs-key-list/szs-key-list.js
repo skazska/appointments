@@ -39,6 +39,7 @@ angular.module('szsKeyList',[])
             opts[optKey] = {title:optText, items:{}}
           }
           opts[optKey].items[itmKey] = {title:itmText};
+          if (this.onChange) this.onChange();
         },
         /**
          * @ngdoc method
@@ -57,12 +58,21 @@ angular.module('szsKeyList',[])
               if (angular.isDefined(opts[optKey].items[itmKey])) {
                 delete opts[optKey].items[itmKey];
                 if (Object.keys(opts[optKey].items).length == 0) delete opts[optKey];
+                if (this.onChange) this.onChange();
               }
             } else {
               if (angular.isDefined(opts[optKey])) delete opts[optKey];
             }
           }
-        }
+        },
+        /**
+         * @ngdoc event
+         * @name onChange
+         * @eventOf szsKeyList.szsKeyList
+         * @description
+         * fired when keyList is being manipulated via add/del
+         */
+        onChange: null
       };
     };
   })

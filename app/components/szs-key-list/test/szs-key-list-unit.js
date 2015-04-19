@@ -26,6 +26,17 @@ describe('szsKeyList module', function(){
       srv.del('opt', 'itm');
       expect(srv.opts).toEqual({});
     });
+    it('should fire onChange', function(){
+      var fired = false;
+      srv.onChange = function(){fired = true;}
+      srv.add('opt', 'itm', 'option', 'item');
+      expect(fired).toBe(true);
+      var fired = false;
+      srv.del('opt', 'itm2');
+      expect(fired).toBe(false);
+      srv.del('opt', 'itm');
+      expect(fired).toBe(true);
+    })
   });
   describe('szsKeyList directive', function() {
     var $compile,
