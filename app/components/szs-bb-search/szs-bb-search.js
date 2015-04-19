@@ -1,5 +1,9 @@
 'use strict';
 
+function szsBbSearchKeyList2Opts(keyList) {
+
+}
+
 /**
  * @ngdoc overview
  * @name szsBbSearch
@@ -111,6 +115,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           var query = szsBbSearchQuery(scope.svcUrl, function(data){
             scope.szsBoardData = data
           });
+
+
 
           scope.$watch('searchStr', function(){
             query.request(scope.searchStr, keyList.opts);
