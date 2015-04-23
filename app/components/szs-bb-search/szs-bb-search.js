@@ -79,7 +79,6 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
       }
     }];
   })
-
 /**
  * @ngdoc service
  * @name szsBbSearch.szsBbSearchKeyListOpts
