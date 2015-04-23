@@ -23,7 +23,8 @@ angular.module('szsBoard', [])
         title:'@'
       },
       link: function (scope, elt, attrs, ctrl){
-        elt.find('.ui-widget-content').resizable({handles:{s:elt.find('.ui-resizable-s')}});
+        var content = elt.find('.ui-widget-content');
+        content.resizable?content.resizable({handles:{s:elt.find('.ui-resizable-s')}}):null;
       },
       templateUrl:'components/szs-board/szs-board-pane.html'
     }

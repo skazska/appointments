@@ -1,9 +1,5 @@
 'use strict';
 
-function szsBbSearchKeyList2Opts(keyList) {
-
-}
-
 /**
  * @ngdoc overview
  * @name szsBbSearch
@@ -85,6 +81,27 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
   })
 
 /**
+ * @ngdoc service
+ * @name szsBbSearch.szsBbSearchKeyListOpts
+ * @module szsBbSearch
+ * @param {szsKeyList.szsKeyList} opts - keyList options data
+ * @returns {Object}
+ * @description
+ * service convert szsKeyList options data {opt:{title:'o',items:{itm:{title:'i'}}}} to {opt:['itm']}
+ */
+  .factory('szsBbSearchKeyListOpts', function(){
+    return function(opts){
+      var res = {};
+      angular.forEach(opts, function(val, key){
+        this[key] = [];
+        angular.forEach(val.items, function(val1, key1){
+          this.push(key1);
+        },this[key]);
+      },res);
+      return res;
+    }
+  })
+/**
  * @ngdoc directive
  * @name szsBbSearch.szsBbSearch
  * @module szsBbSearch
@@ -99,8 +116,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
  * watcher for searchStr and event listener for keyList change
  * itemClick function for
  */
-  .directive('szsBbSearch',['$http', 'szsKeyList', 'szsBbSearchQuery',
-    function($http, szsKeyList, szsBbSearchQuery){
+  .directive('szsBbSearch',['$http', 'szsKeyList', 'szsBbSearchQuery', 'szsBbSearchKeyListOpts',
+    function($http, szsKeyList, szsBbSearchQuery, szsBbSearchKeyListOpts){
       return {
         restrict: 'E',
         scope: {
@@ -111,18 +128,16 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         link: function(scope) { //, elt, attrs, ctrl){
           var keyList = szsKeyList();
           scope.szsKeyList = keyList;
-
+          scope.szsBoardData = [];
           var query = szsBbSearchQuery(scope.svcUrl, function(data){
             scope.szsBoardData = data
           });
 
-
-
           scope.$watch('searchStr', function(){
-            query.request(scope.searchStr, keyList.opts);
+            query.request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
           });
           keyList.onChange = function(){
-            query.request(scope.searchStr, keyList.opts);
+            query.request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
           };
 
           scope.sortOptions = {
