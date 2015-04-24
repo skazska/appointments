@@ -13,6 +13,11 @@ angular.module('szsBoard', [])
  * @module szsBoard
  * @restrict 'E'
  * @param {attribute} title - text for pane's title
+ * @transclude
+ * @description
+ * wrapper, consist of header, transclude container, resize handler
+ * header contains logo and title, provided through scope
+ *
  */
   .directive('szsBoardPane', [function(){
     return{
