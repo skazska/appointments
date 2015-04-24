@@ -84,7 +84,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
  * @name szsBbSearch.szsBbSearchKeyListOpts
  * @module szsBbSearch
  * @param {szsKeyList.szsKeyList} opts - keyList options data
- * @returns {Object}
+ * @returns {Object} - options in form {opt:['itm']}
  * @description
  * service convert szsKeyList options data {opt:{title:'o',items:{itm:{title:'i'}}}} to {opt:['itm']}
  */
