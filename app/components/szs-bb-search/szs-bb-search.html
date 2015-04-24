@@ -1,30 +1,38 @@
 <div class="szs-bb-search" >
-    <div class="szs-search-string">
-        <label>
-            Поиск:
-            <input ng-model="searchStr" ng-model-options="{ debounce: 1000 }">{{searchStr}}
-        </label>
-    </div>
-
+    <form class="szs-search-string row">
+        <div class="col-sm-1 col-md-2 col-lg-2">
+            <label for="szs-search-string">Поиск:</label>
+        </div>
+        <div class="col-sm-11 col-md-10 col-lg-9">
+            <input id="szs-search-string" class="form-control" ng-model="searchStr" ng-model-options="{ debounce: 1000 }">
+        </div>
+    </form>
     <szs-key-list-panel
-            szs-key-list="szsKeyList"
-            >
+        szs-key-list="szsKeyList"
+        >
     </szs-key-list-panel>
 
-    <div class="szs-bb-search-tabs">
-        <ul ui-sortable="sortOptions" ng-model="szsBoardData">
-            <li ng-repeat="cat in szsBoardData track by cat.option">
-                {{cat.title}}
-            </li>
-        </ul>
-    </div>
-    <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"  title="{{cat.title}}">
-        <span class="opt-item"
-              ng-repeat="itm in cat.items track by itm.item"
-              ng-click="itemClick(cat, itm)"
-              >
-            {{itm.title}}
-        </span>
+
+    <div class="row">
+        <div class="szs-bb-search-tabs col-sm-1 col-md-2 col-lg-2">
+            <ul ui-sortable="sortOptions" ng-model="szsBoardData">
+                <li ng-repeat="cat in szsBoardData track by cat.option">
+                    {{cat.title}}
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-11 col-md-10 col-lg-9">
+            <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"  title="{{cat.title}}">
+                <span class="opt-item"
+                      ng-repeat="itm in cat.items track by itm.item"
+                      ng-click="itemClick(cat, itm)"
+                        >
+                    {{itm.title}}
+                </span>
+            </div>
+
+        </div>
+
     </div>
 
 </div>
