@@ -1,0 +1,17 @@
+.szs-key-list {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.szs-key-list ul {
+    display: inline-block;
+    padding-left: 0;
+}
+
+.szs-key-list li {
+    display: inline-block;
+    padding-left: 2em;
+    padding-right: 1em;
+    border-radius: 1em;
+    border: 1px dotted #000000;
+}

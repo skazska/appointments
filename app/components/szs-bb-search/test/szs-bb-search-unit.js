@@ -119,7 +119,7 @@ describe('module szsBbSearch',function(){
           ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
             ,{item: 'item2', title: 'item2'}]}]);
       elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      expect(elem.find('.szs-bb-search-tabs ul>li').length).toBe(2);
+      expect(elem.find('.szs-bb-search-tabs .szs-bb-search-tab').length).toBe(2);
     });
     it('Should contain szs-board-pane items', function(){
       $httpBackend.expectGET('test').
@@ -136,7 +136,16 @@ describe('module szsBbSearch',function(){
       expect(pane.find('.opt-item').length).toBe(2);
       expect(pane.html()).toContain('item1');
       expect(pane.html()).toContain('item2');
-
     });
+    it('should reorder tabs and panes on tab click so it become first', function(){
+      $httpBackend.expectGET('test').
+      respond([{option: 'test', title:'test'},{option: 'test1', title:'test1'},{option: 'test2', title:'test2'}]);
+      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+      var tabs = elem.find('.szs-bb-search-tab');
+      expect(tabs.eq(0).html()).toContain('test');
+      tabs.eq(1).click(); //$rootScope.$digest();
+      tabs = elem.find('.szs-bb-search-tab');
+      expect(tabs.eq(0).html()).toContain('test1');
+    })
   });
 });

@@ -115,8 +115,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
  * watcher for searchStr and event listener for keyList change
  * itemClick function for
  */
-  .directive('szsBbSearch',['$http', 'szsKeyList', 'szsBbSearchQuery', 'szsBbSearchKeyListOpts',
-    function($http, szsKeyList, szsBbSearchQuery, szsBbSearchKeyListOpts){
+  .directive('szsBbSearch',['$http', '$window','szsKeyList', 'szsBbSearchQuery', 'szsBbSearchKeyListOpts',
+    function($http, $window, szsKeyList, szsBbSearchQuery, szsBbSearchKeyListOpts){
       return {
         restrict: 'E',
         scope: {
@@ -131,6 +131,15 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           var query = szsBbSearchQuery(scope.svcUrl, function(data){
             scope.szsBoardData = data
           });
+          scope.tabClick = function(evt){
+            var elt = angular.element(evt.target);
+            if (elt.hasClass('szs-bb-search-tab')) {
+              var i = elt.attr('data-szs-bb-search-tab');
+              i = scope.szsBoardData.splice(i,1);
+              scope.szsBoardData.splice(0,0,i[0]);
+            }
+
+          };
 
           scope.$watch('searchStr', function(){
             query.request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
@@ -139,8 +148,14 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
             query.request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
           };
 
-          scope.sortOptions = {
-            axis:'y'
+          scope.sortOptions = {axis:'y'};
+          if ($window.innerWidth<768){ scope.sortOptions.axis = 'x'; }
+          $window.onresize = function(){
+            if ($window.innerWidth<768){
+              scope.$apply("sortOptions.axis = 'x'");
+            } else {
+              scope.$apply("sortOptions.axis = 'y'");
+            }
           };
 
           scope.itemClick = function(option, item) {

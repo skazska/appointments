@@ -92,6 +92,14 @@ angular.module('szsKeyList',[])
         keyList:'=szsKeyList'
       },
       link: function(scope, elt, attrs, ctrl){
+        scope.optClick = function(optKey, evt){
+          var elt = angular.element(evt.target);
+          if (elt.hasClass('szs-key-list-item')) {
+            if (evt.offsetX < 20) {
+              scope.keyList.del(optKey, elt.attr('data-szs-item'));
+            }
+          }
+        }
       },
       templateUrl: 'components/szs-key-list/szs-key-list-panel.html'
     }
