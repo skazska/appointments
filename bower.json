@@ -12,6 +12,7 @@
     "bootstrap": ">=3.x",
     "angular-ui-bootstrap": ">=0.12.x",
     "angular-ui-sortable": ">=0.12.x",
-    "angular-mocks": ">=1.2.x"
+    "angular-mocks": ">=1.2.x",
+    "less": ">=2.5.0"
   }
 }
