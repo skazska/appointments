@@ -90,7 +90,7 @@ angular.module('szsKeyList',[])
       scope: {
         keyList:'=szsKeyList'
       },
-      link: function(scope, elt, attrs, ctrl){
+      link: function(scope){//, elt, attrs, ctrl){
         scope.optClick = function(optKey, evt){
           var target = angular.element(evt.target);
           if (target.hasClass('szs-key-list-button')) {
@@ -98,7 +98,7 @@ angular.module('szsKeyList',[])
               scope.keyList.del(optKey, target.attr('data-szs-item'));
             }
           }
-        }
+        };
         scope.optDel = function(optKey){
           scope.keyList.del(optKey);
         }
