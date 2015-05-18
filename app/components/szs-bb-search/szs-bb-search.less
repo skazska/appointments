@@ -1,0 +1,18 @@
+  .szs-bb-search-tabs {
+    padding-left: 0em;
+  }
+  .szs-bb-search-tab {
+    padding: 1em;
+    display: inline-block;
+  }
+  .szs-bb-search-tab-layout(@type: wide) {
+    .szs-bb-search-tab when (@type = wide) {
+      display: block;
+    }
+    .szs-bb-search-tab when (@type = narrow) {
+      display: inline-block;
+    }
+  }
+
+
+

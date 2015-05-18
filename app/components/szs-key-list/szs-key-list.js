@@ -87,18 +87,20 @@ angular.module('szsKeyList',[])
   .directive('szsKeyListPanel', [function(){
     return {
       restrict: 'E',
-//      require: '^szsBbSearch',
       scope: {
         keyList:'=szsKeyList'
       },
       link: function(scope, elt, attrs, ctrl){
         scope.optClick = function(optKey, evt){
-          var elt = angular.element(evt.target);
-          if (elt.hasClass('szs-key-list-item')) {
-            if (evt.offsetX < 20) {
-              scope.keyList.del(optKey, elt.attr('data-szs-item'));
+          var target = angular.element(evt.target);
+          if (target.hasClass('szs-key-list-button')) {
+            if (target.hasClass('remove')) {
+              scope.keyList.del(optKey, target.attr('data-szs-item'));
             }
           }
+        }
+        scope.optDel = function(optKey){
+          scope.keyList.del(optKey);
         }
       },
       templateUrl: 'components/szs-key-list/szs-key-list-panel.html'

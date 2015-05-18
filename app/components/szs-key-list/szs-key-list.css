@@ -1,17 +1,22 @@
 .szs-key-list {
-    display: inline-block;
-    margin-left: 10px;
+  display: inline-block;
+  border-radius: 1em;
+  border: 1px dotted #000000;
+  padding: 0.2em;
+  margin: 0.2em;
 }
-
 .szs-key-list ul {
-    display: inline-block;
-    padding-left: 0;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
 }
-
 .szs-key-list li {
-    display: inline-block;
-    padding-left: 2em;
-    padding-right: 1em;
-    border-radius: 1em;
-    border: 1px dotted #000000;
+  display: inline-block;
+  margin: 0 0 0 0.1em;
+  padding: 0 0.5em 0 1em;
+  border-radius: 1em;
+  border: 1px dotted #000000;
+}
+.szs-key-list-button {
+  cursor: pointer;
 }

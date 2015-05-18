@@ -22,6 +22,7 @@
     "shelljs": ">=0.2.6"
   },
   "scripts": {
+    "less": "lessc app/app.less",
     "postinstall": "bower install",
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1",
