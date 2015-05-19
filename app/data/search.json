@@ -3,6 +3,7 @@
     "option":"opt3",
     "title" : "Option3",
     "contentType" :"option",
+    "logo" : "http://i.imgur.com/TQAOVkU.jpg",
     "items":[
       { "item":"itm4", "title":"Item4" },
       { "item":"itm6", "title":"Item6" },
@@ -13,6 +14,7 @@
     "option":"opt2",
     "title":"Option2",
     "contentType":"option",
+    "logo" : "http://i.imgur.com/VCm4w7f.jpg",
     "items":[
       { "item":"itm1", "title":"Item1" },
       { "item":"itm2", "title":"Item2" }
@@ -22,6 +24,7 @@
     "option":"opt1",
     "title":"Option1",
     "contentType":"item",
+    "logo" : "http://i.imgur.com/rY5YZ0e.jpg",
     "items":[
       { "item":"itm3", "title":"Item3" }
     ]

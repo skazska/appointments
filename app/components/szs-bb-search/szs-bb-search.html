@@ -1,29 +1,37 @@
 <div class="szs-bb-search" >
     <form class="szs-search-string row">
-        <div class="col-sm-1 ">
-            <label for="szs-search-string">Поиск:</label>
-        </div>
-        <div class="col-sm-11 ">
-            <input id="szs-search-string" class="form-control" ng-model="searchStr" ng-model-options="{ debounce: 1000 }">
+        <div class="col-sm-12 ">
+            <input placeholder="Поиск" id="szs-search-string" class="form-control" ng-model="searchStr" ng-model-options="{ debounce: 1000 }">
         </div>
     </form>
     <div class="row">
-        <szs-key-list-panel
-                szs-key-list="szsKeyList"
-                >
-        </szs-key-list-panel>
-    </div>
+        <div class="col-sm-10 ">
+            <szs-key-list-panel
+                    szs-key-list="szsKeyList"
+                    >
+            </szs-key-list-panel>
 
+        </div>
+        <div class="col-sm-2">
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-2">
-            <ul class="szs-bb-search-tabs" ui-sortable="sortOptions" ng-model="szsBoardData" ng-click="tabClick($event)">
+            <ul class="szs-bb-search-tabs" ui-sortable="sortOptions" ng-model="szsBoardData" >
                 <li class="szs-bb-search-tab"
                     ng-repeat="cat in szsBoardData track by cat.option"
-                    data-szs-bb-search-tab="{{$index}}">{{cat.title}}</li>
+                    data-szs-bb-search-tab="{{$index}}"
+                    ng-click="tabClick($event)">
+                    <img ng-src="{{cat.logo}}">
+                    <span ng-bind="cat.title"></span>
+                </li>
             </ul>
         </div>
         <div class="col-sm-10">
-            <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"  title="{{cat.title}}">
+            <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"
+                title="{{cat.title}}"
+                logo="{{cat.logo}}">
                 <span class="opt-item"
                       ng-repeat="itm in cat.items track by itm.item"
                       ng-click="itemClick(cat, itm)"

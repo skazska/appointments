@@ -132,9 +132,9 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
             scope.szsBoardData = data
           });
           scope.tabClick = function(evt){
-            var elt = angular.element(evt.target);
-            if (elt.hasClass('szs-bb-search-tab')) {
-              var i = elt.attr('data-szs-bb-search-tab');
+            var target = angular.element(evt.delegateTarget);
+            if (target.hasClass('szs-bb-search-tab')) {
+              var i = target.attr('data-szs-bb-search-tab');
               i = scope.szsBoardData.splice(i,1);
               scope.szsBoardData.splice(0,0,i[0]);
             }

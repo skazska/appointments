@@ -12,7 +12,7 @@ describe('module szs-board', function(){
       $compile = _$compile_;
       $rootScope = _$rootScope_;
       scope = $rootScope.$new();
-      elt = '<div szs-board-pane title="title">Hello!</div>';
+      elt = '<div szs-board-pane title="title" logo="url">Hello!</div>';
       elt = $compile(elt)(scope);
       $rootScope.$digest();
     }));
@@ -26,8 +26,8 @@ describe('module szs-board', function(){
     });
     it('should have header composed of logo and title, provided through attrs', function(){
       var header = elt.find('.szs-board-pane-header');
-      expect(header.find('.logo').length).toBe(1);
-      expect(header.find('.title').length).toBe(1);
+      expect(header.find('img').attr("ng-src")).toBe("url");
+      expect(header.find('.title').text()).toBe("title");
 
     });
   });

@@ -25,7 +25,8 @@ angular.module('szsBoard', [])
 //      require: '^szsBbSearch',
       transclude: true,
       scope: {
-        title:'@'
+        title:'@',
+        logo:'@'
       },
       link: function (scope, elt, attrs, ctrl){
         var content = elt.find('.ui-widget-content');

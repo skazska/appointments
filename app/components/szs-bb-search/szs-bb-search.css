@@ -1,7 +1,12 @@
 .szs-bb-search-tabs {
-  padding-left: 0em;
+  padding: 1em 0;
 }
 .szs-bb-search-tab {
-  padding: 1em;
   display: inline-block;
+  padding: 1em 0;
+  cursor: pointer;
+}
+.szs-bb-search-tab img {
+  height: 50px;
+  width: 50px;
 }
