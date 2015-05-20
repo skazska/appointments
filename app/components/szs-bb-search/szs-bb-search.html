@@ -31,7 +31,8 @@
         <div class="col-sm-10">
             <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"
                 title="{{cat.title}}"
-                logo="{{cat.logo}}">
+                logo="{{cat.logo}}"
+                position="{{$index}}">
                 <span class="opt-item"
                       ng-repeat="itm in cat.items track by itm.item"
                       ng-click="itemClick(cat, itm)"

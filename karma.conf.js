@@ -25,7 +25,6 @@ module.exports = function(config){
 
       'app/components/**/*.js',
       'app/components/**/*.html'
-
     ],
 
     autoWatch : true,

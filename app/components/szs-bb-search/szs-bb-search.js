@@ -123,8 +123,13 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           svcUrl: '@',
           searchStr: '@'
         },
-
-        link: function(scope) { //, elt, attrs, ctrl){
+        controller: function($scope) {//, $element, $attrs, $transclude, otherInjectables) { ... },
+          function upTop(i){
+            i = scope.szsBoardData.splice(i,1);
+            scope.szsBoardData.splice(0,0,i[0]);
+          }
+          var scope = $scope;
+          this.upTop = upTop;
           var keyList = szsKeyList();
           scope.szsKeyList = keyList;
           scope.szsBoardData = [];
@@ -135,8 +140,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
             var target = angular.element(evt.delegateTarget);
             if (target.hasClass('szs-bb-search-tab')) {
               var i = target.attr('data-szs-bb-search-tab');
-              i = scope.szsBoardData.splice(i,1);
-              scope.szsBoardData.splice(0,0,i[0]);
+              upTop(i);
             }
 
           };
@@ -169,6 +173,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
             }
           };
         },
+//        link: function(scope) { //, elt, attrs, ctrl){
+//        },
         templateUrl: 'components/szs-bb-search/szs-bb-search.html'
       }
     }

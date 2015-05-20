@@ -22,15 +22,39 @@ angular.module('szsBoard', [])
   .directive('szsBoardPane', [function(){
     return{
       restrict: 'A',
-//      require: '^szsBbSearch',
+      require: '^?szsBbSearch',
       transclude: true,
       scope: {
         title:'@',
-        logo:'@'
+        logo:'@',
+        position:'@'
       },
       link: function (scope, elt, attrs, ctrl){
         var content = elt.find('.ui-widget-content');
         content.resizable?content.resizable({handles:{s:elt.find('.ui-resizable-s')}}):null;
+
+        scope.action = function(evt){
+          var action = $(evt.target).attr("data-action");
+          if (angular.isDefined(action)) {
+            switch (action) {
+              case 'min':
+                $(evt.currentTarget).height(elt.find(".ui-widget-header").height()+1);
+                break;
+              case 'med':
+                $(evt.currentTarget).height(elt.find(".ui-widget-header").height()+300);
+                break;
+              case 'max':
+//                $(evt.currentTarget).height(elt.find(".ui-widget-header").height()+600);
+                $(evt.currentTarget).removeAttr("style");
+                break;
+              case 'top':
+                ctrl.upTop(this.position);
+                break;
+              case 'btm':
+                break;
+            }
+          }
+        }
       },
       templateUrl:'components/szs-board/szs-board-pane.html'
     }

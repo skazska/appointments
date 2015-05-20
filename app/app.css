@@ -49,6 +49,16 @@
 .szs-board-pane-body {
   padding: 0.5em;
 }
+.szs-board-pane-header .tie {
+  float: right;
+}
+.szs-board-pane-header .tie img {
+  height: 20px;
+  width: 20px;
+}
+.szs-board-pane.ui-widget-content.ui-resizable {
+  overflow: hidden;
+}
 @media (min-width: 768px) {
   .szs-bb-search-tab {
     display: block;
