@@ -77,75 +77,85 @@ describe('module szsBbSearch',function(){
       scope = $rootScope.$new();
       elem = '<szs-bb-search svc-url="test" ></szs-bb-search>';
     }));
-    it('Should request search and set response to szsBoardData',function(){
-      $httpBackend.expectGET('test?searchStr=srch')
-        .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-      elem = '<szs-bb-search svc-url="test" search-str="srch" ></szs-bb-search>';
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      iScope = elem.isolateScope();
-      expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+    describe('markup', function(){
+      it('Should contain szs-search-string', function(){
+        $httpBackend.expectGET('test').
+          respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
+            ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
+              ,{item: 'item2', title: 'item2'}]}]);
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        expect(elem.find('.szs-search-string input[ng-model=searchStr]').length).toBe(1);
+      });
+      it('Should contain tabs', function(){
+        $httpBackend.expectGET('test').
+          respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
+            ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
+              ,{item: 'item2', title: 'item2'}]}]);
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        expect(elem.find('.szs-bb-search-tabs .szs-bb-search-tab').length).toBe(2);
+      });
+      it('Should contain szs-board-pane items', function(){
+        $httpBackend.expectGET('test').
+          respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
+            ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
+              ,{item: 'item2', title: 'item2'}]}]);
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        var panes = elem.find('.szs-board-pane');
+        expect(panes.length).toBe(2);
+        var pane = panes.eq(0);
+        expect(pane.find('.opt-item').length).toBe(1);
+        expect(pane.html()).toContain('item');
+        pane = panes.eq(1);
+        expect(pane.find('.opt-item').length).toBe(2);
+        expect(pane.html()).toContain('item1');
+        expect(pane.html()).toContain('item2');
+      });
+
     });
-    it('Should send request with searchStr param, on searchStr scope value change', function(){
-      $httpBackend.expectGET('test').respond([]);
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      iScope = elem.isolateScope();
-      expect(iScope.szsBoardData).toEqual([]);
-      $httpBackend.expectGET('test?searchStr=1')
-        .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-      iScope.searchStr = '1'; $rootScope.$digest(); $httpBackend.flush();
-      expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+    describe('communication ', function(){
+      it('Should request search and set response to szsBoardData',function(){
+        $httpBackend.expectGET('test?searchStr=srch')
+          .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+        elem = '<szs-bb-search svc-url="test" search-str="srch" ></szs-bb-search>';
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        iScope = elem.isolateScope();
+        expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+      });
+      it('Should send request with searchStr param, on searchStr scope value change', function(){
+        $httpBackend.expectGET('test').respond([]);
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        iScope = elem.isolateScope();
+        expect(iScope.szsBoardData).toEqual([]);
+        $httpBackend.expectGET('test?searchStr=1')
+          .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+        iScope.searchStr = '1'; $rootScope.$digest(); $httpBackend.flush();
+        expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+      });
+      it("Should send request with options params, on scope's keyList change", function(){
+        $httpBackend.expectGET('test').respond([]);
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        iScope = elem.isolateScope();
+        expect(iScope.szsBoardData).toEqual([]);
+        $httpBackend.expectGET('test?opt=itm')
+          .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+        iScope.szsKeyList.add('opt', 'itm', 'option', 'item'); $rootScope.$digest(); $httpBackend.flush();
+        expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+      });
+
     });
-    it("Should send request with options params, on scope's keyList change", function(){
-      $httpBackend.expectGET('test').respond([]);
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      iScope = elem.isolateScope();
-      expect(iScope.szsBoardData).toEqual([]);
-      $httpBackend.expectGET('test?opt=itm')
-        .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-      iScope.szsKeyList.add('opt', 'itm', 'option', 'item'); $rootScope.$digest(); $httpBackend.flush();
-      expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+    describe('interactions', function(){
+      it('should reorder tabs and panes on tab click so it become first', function(){
+        $httpBackend.expectGET('test').
+          respond([{option: 'test', title:'test'},{option: 'test1', title:'test1'},{option: 'test2', title:'test2'}]);
+        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
+        var tabs = elem.find('.szs-bb-search-tab');
+        expect(tabs.eq(0).html()).toContain('test');
+        tabs.eq(1).click(); //$rootScope.$digest();
+        tabs = elem.find('.szs-bb-search-tab');
+        expect(tabs.eq(0).html()).toContain('test1');
+      });
+
     });
-    it('Should contain szs-search-string', function(){
-      $httpBackend.expectGET('test').
-        respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
-          ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
-            ,{item: 'item2', title: 'item2'}]}]);
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      expect(elem.find('.szs-search-string input[ng-model=searchStr]').length).toBe(1);
-    });
-    it('Should contain tabs', function(){
-      $httpBackend.expectGET('test').
-        respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
-          ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
-            ,{item: 'item2', title: 'item2'}]}]);
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      expect(elem.find('.szs-bb-search-tabs .szs-bb-search-tab').length).toBe(2);
-    });
-    it('Should contain szs-board-pane items', function(){
-      $httpBackend.expectGET('test').
-        respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
-          ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
-            ,{item: 'item2', title: 'item2'}]}]);
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      var panes = elem.find('.szs-board-pane');
-      expect(panes.length).toBe(2);
-      var pane = panes.eq(0);
-      expect(pane.find('.opt-item').length).toBe(1);
-      expect(pane.html()).toContain('item');
-      pane = panes.eq(1);
-      expect(pane.find('.opt-item').length).toBe(2);
-      expect(pane.html()).toContain('item1');
-      expect(pane.html()).toContain('item2');
-    });
-    it('should reorder tabs and panes on tab click so it become first', function(){
-      $httpBackend.expectGET('test').
-      respond([{option: 'test', title:'test'},{option: 'test1', title:'test1'},{option: 'test2', title:'test2'}]);
-      elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-      var tabs = elem.find('.szs-bb-search-tab');
-      expect(tabs.eq(0).html()).toContain('test');
-      tabs.eq(1).click(); //$rootScope.$digest();
-      tabs = elem.find('.szs-bb-search-tab');
-      expect(tabs.eq(0).html()).toContain('test1');
-    })
+
   });
 });
