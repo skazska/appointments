@@ -79,7 +79,7 @@ describe('module szsBbSearch',function(){
       $httpBackend = _$httpBackend_;
 
       scope = $rootScope.$new();
-      elem = '<szs-bb-search svc-url="test"></szs-bb-search>';
+      elem = '<szs-bb-search svc-url="test" auto-apply></szs-bb-search>';
     }));
     describe('markup', function(){
       beforeEach(function(){
@@ -109,14 +109,14 @@ describe('module szsBbSearch',function(){
         expect(elem.find('.szs-search-string input[ng-model=searchStr]').length).toBe(1);
       });
       it('Should contain markup for apply changes in key list', function(){
-
+        expect(elem.find('#applyBtn').length).toBe(1);
       });
     });
     describe('communication ', function(){
       it('Should request search and set response to szsBoardData',function(){
         $httpBackend.expectGET('test?searchStr=srch')
           .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-        elem = '<szs-bb-search svc-url="test" search-str="srch" ></szs-bb-search>';
+        elem = '<szs-bb-search svc-url="test" search-str="srch" auto-apply></szs-bb-search>';
         elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
         iScope = elem.isolateScope();
         expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
@@ -162,7 +162,9 @@ describe('module szsBbSearch',function(){
         tabs = elem.find('.szs-bb-search-tab');
         expect(tabs.eq(0).html()).toContain('test1');
       });
+      it('should initiate search request when click on applyBtn if auto-apply is not set', function(){
 
+      });
     });
 
   });

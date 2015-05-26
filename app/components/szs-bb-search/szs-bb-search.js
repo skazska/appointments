@@ -125,9 +125,10 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         scope: {
           svcUrl: '@',
           searchStr: '@',
-          minSearchStr: '@'
+          minSearchStr: '@',
+          autoApply: '@'
         },
-        controller: function($scope) {//, $element, $attrs, $transclude, otherInjectables) { ... },
+        controller: function($scope, $element, $attrs){//, $transclude, otherInjectables) { ... },
           var scope = $scope;
           if (angular.isDefined(scope.minSearchStr)) { scope.minSearchStr = parseInt(scope.minSearchStr); }
           else { scope.minSearchStr = 0; }
@@ -165,17 +166,22 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           };
 
           //querying
+          //request data method
           scope.request = function(){
-            szsBbSearchQuery(scope.svcUrl, function(data){ scope.szsBoardData = data; })
-              .request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
+            szsBbSearchQuery(scope.svcUrl, function(data){
+              scope.szsBoardData = data;
+            }).request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
           };
-          //query on search string change
-          scope.$watch('searchStr', function(newVal, oldVal){
-            if (!angular.isDefined(newVal)) newVal = "";
-            if ((newVal.length>=parseInt(scope.minSearchStr))){ scope.request(); }
-          });
-          //query on keyList change
-          keyList.onChange = scope.request;
+          //if auto-apply - set watcher and listener to search string and keylist
+          if (angular.isDefined($attrs.autoApply)){
+            //query on search string change
+            scope.$watch('searchStr', function(newVal, oldVal){
+              if (!angular.isDefined(newVal)) newVal = "";
+              if ((newVal.length>=parseInt(scope.minSearchStr))){ scope.request(); }
+            });
+            //query on keyList change
+            keyList.onChange = scope.request;
+          }
 
           //init JQuery sortable with responsivness
           scope.sortOptions = {axis:'y'};
