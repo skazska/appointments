@@ -64,42 +64,37 @@ describe('module szsBbSearch',function(){
     });
   });
   describe('szsBbSearch directive', function(){
-    var $compile, $rootScope, $httpBackend;
+    var $compile, $rootScope, $httpBackend, $log;
     var scope, iScope, elem;
+    var mod, queryRes;
     beforeEach(function(){
+
       module('templates');
       module('szsBbSearch');
     });
-    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_){
+    beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_, _$log_){
+      $log = _$log_;
       $compile = _$compile_;
       $rootScope = _$rootScope_;
       $httpBackend = _$httpBackend_;
+
       scope = $rootScope.$new();
-      elem = '<szs-bb-search svc-url="test" ></szs-bb-search>';
+      elem = '<szs-bb-search svc-url="test"></szs-bb-search>';
     }));
     describe('markup', function(){
-      it('Should contain szs-search-string', function(){
+      beforeEach(function(){
         $httpBackend.expectGET('test').
           respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
             ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
-              ,{item: 'item2', title: 'item2'}]}]);
-        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-        expect(elem.find('.szs-search-string input[ng-model=searchStr]').length).toBe(1);
+            ,{item: 'item2', title: 'item2'}]}]);
+        elem = $compile(elem)(scope);
+        $httpBackend.flush();
+        $rootScope.$digest();
       });
       it('Should contain tabs', function(){
-        $httpBackend.expectGET('test').
-          respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
-            ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
-              ,{item: 'item2', title: 'item2'}]}]);
-        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
         expect(elem.find('.szs-bb-search-tabs .szs-bb-search-tab').length).toBe(2);
       });
       it('Should contain szs-board-pane items', function(){
-        $httpBackend.expectGET('test').
-          respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
-            ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
-              ,{item: 'item2', title: 'item2'}]}]);
-        elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
         var panes = elem.find('.szs-board-pane');
         expect(panes.length).toBe(2);
         var pane = panes.eq(0);
@@ -110,7 +105,12 @@ describe('module szsBbSearch',function(){
         expect(pane.html()).toContain('item1');
         expect(pane.html()).toContain('item2');
       });
+      it('Should contain szs-search-string', function(){
+        expect(elem.find('.szs-search-string input[ng-model=searchStr]').length).toBe(1);
+      });
+      it('Should contain markup for apply changes in key list', function(){
 
+      });
     });
     describe('communication ', function(){
       it('Should request search and set response to szsBoardData',function(){
@@ -121,6 +121,14 @@ describe('module szsBbSearch',function(){
         iScope = elem.isolateScope();
         expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
       });
+      it('Should not request search if search string len less than min-search-str',function(){
+        $httpBackend.expectGET('test?searchStr=src')
+          .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+        elem = '<szs-bb-search svc-url="test" search-str="src" min-search-str="4" ></szs-bb-search>';
+        elem = $compile(elem)(scope);
+        expect($httpBackend.flush).toThrow();
+      });
+
       it('Should send request with searchStr param, on searchStr scope value change', function(){
         $httpBackend.expectGET('test').respond([]);
         elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
