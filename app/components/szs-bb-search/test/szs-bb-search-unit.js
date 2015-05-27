@@ -66,7 +66,6 @@ describe('module szsBbSearch',function(){
   describe('szsBbSearch directive', function(){
     var $compile, $rootScope, $httpBackend, $log;
     var scope, iScope, elem;
-    var mod, queryRes;
     beforeEach(function(){
 
       module('templates');
@@ -79,8 +78,30 @@ describe('module szsBbSearch',function(){
       $httpBackend = _$httpBackend_;
 
       scope = $rootScope.$new();
-      elem = '<szs-bb-search svc-url="test" auto-apply></szs-bb-search>';
+//      elem = '<szs-bb-search svc-url="test" ></szs-bb-search>';
+//      $httpBackend.expectGET('test?searchStr=src')
+//        .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
     }));
+    describe('apply and auto apply', function(){
+      beforeEach(function(){
+        $httpBackend.expectGET('').respond([]);
+        elem = '<szs-bb-search ></szs-bb-search>';
+        elem = $compile(elem)(scope);
+      });
+      it('should contain element with class apply-btn', function(){
+        expect(elem.find('.apply-btn').length).toBe(1);
+      });
+      it('should initiate search request if auto-apply is set', function(){
+        elem = '<szs-bb-search auto-apply></szs-bb-search>';
+        elem = $compile(elem)(scope);
+        expect($httpBackend.flush).not.toThrow();
+      });
+      it('should initiate search request when click on applyBtn if auto-apply is not set', function(){
+        expect($httpBackend.flush).toThrow();
+        elem.find('.applyBtn').eq(0).click(); //$rootScope.$digest();
+        expect($httpBackend.flush).not.toThrow();
+      });
+    });
     describe('markup', function(){
       beforeEach(function(){
         $httpBackend.expectGET('test').
@@ -124,7 +145,7 @@ describe('module szsBbSearch',function(){
       it('Should not request search if search string len less than min-search-str',function(){
         $httpBackend.expectGET('test?searchStr=src')
           .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-        elem = '<szs-bb-search svc-url="test" search-str="src" min-search-str="4" ></szs-bb-search>';
+        elem = '<szs-bb-search svc-url="test" search-str="src" min-search-str="4" auto-apply></szs-bb-search>';
         elem = $compile(elem)(scope);
         expect($httpBackend.flush).toThrow();
       });
@@ -161,9 +182,6 @@ describe('module szsBbSearch',function(){
         tabs.eq(1).click(); //$rootScope.$digest();
         tabs = elem.find('.szs-bb-search-tab');
         expect(tabs.eq(0).html()).toContain('test1');
-      });
-      it('should initiate search request when click on applyBtn if auto-apply is not set', function(){
-
       });
     });
 
