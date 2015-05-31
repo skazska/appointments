@@ -46,9 +46,10 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         return function (path, setter) {
           var req = {
             method: 'GET',
-            url: urlPrefix.concat(path),
+            url: urlPrefix.concat(path||''),
             params: {},
-            headers: {}
+            headers: {},
+            responseType: "json"
           };
           return {
             /**
@@ -71,10 +72,14 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
              *
              */
             request: function (searchStr, opts) {
-              req.params = angular.copy(opts);
-              req.params.searchStr = searchStr;
+              if (angular.isDefined(opts)){
+                req.params = angular.copy(opts);
+              }
+              if (angular.isDefined(searchStr)){
+                req.params.searchStr = searchStr;
+              }
               $http(req).success(function (data) {
-                setter(data);
+                (setter||angular.noop)(data);
               });//.error();
             }
           }
