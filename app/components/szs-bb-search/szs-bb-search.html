@@ -1,24 +1,31 @@
 <div class="szs-bb-search" >
-    <form class="szs-search-string row">
-        <div class="col-sm-12 ">
-            <input placeholder="Поиск" id="szs-search-string" class="form-control" ng-model="searchStr" ng-model-options="{ debounce: 1000 }">
+    <form class="szs-search-string ">
+        <div class="row">
+            <div class="col-lg-11 col-sm-10 col-xs-9 form-group">
+                <label for="szs-search-string" class="sr-only">Поиск</label>
+                <input placeholder="Поиск" id="szs-search-string"
+                        class="form-control" ng-model="searchStr"
+                        ng-model-options="{ debounce: 1000 }">
+            </div>
+            <div class="col-lg-1 col-sm-2 col-xs-3">
+                <button class="btn apply-btn" ng-click="request()" ng-disabled="applyBtnDisabled">Search
+                </button>
+            </div>
+        </div>
+        <div class="filters row" id="filters">
+            <div class="col-sm-12 ">
+                <szs-key-list-panel
+                        szs-key-list="szsKeyList"
+                        >
+                </szs-key-list-panel>
+
+            </div>
         </div>
     </form>
-    <div class="filters row" id="filters">
-        <div class="col-sm-10 ">
-            <szs-key-list-panel
-                    szs-key-list="szsKeyList"
-                    >
-            </szs-key-list-panel>
-
-        </div>
-        <div class="col-sm-2">
-            <button class="apply-btn" ng-click="request()">apply</button>
-        </div>
-    </div>
     <div class="row">
         <div class="col-sm-2">
-            <ul class="szs-bb-search-tabs" ui-sortable="sortOptions" ng-model="szsBoardData" >
+            <ul class="szs-bb-search-tabs" ui-sortable="sortOptions"
+                 ng-model="szsBoardData" >
                 <li class="szs-bb-search-tab"
                     ng-repeat="cat in szsBoardData track by cat.option"
                     data-szs-bb-search-tab="{{$index}}"

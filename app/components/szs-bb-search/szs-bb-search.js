@@ -186,6 +186,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
             });
             //query on keyList change
             keyList.onChange = scope.request;
+            //disable apply-btn
+            scope.applyBtnDisabled = true;
           }
 
           //init JQuery sortable with responsivness

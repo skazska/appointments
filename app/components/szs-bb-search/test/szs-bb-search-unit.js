@@ -121,6 +121,15 @@ describe('module szsBbSearch',function(){
         elem.find('.apply-btn').eq(0).click();
         expect($httpBackend.flush).not.toThrow();
       });
+      it('disable apply button when aut-apply is set', function(){
+        $rootScope.$digest();
+        expect(elem.find('.apply-btn').eq(0).is("[disabled]")).toBeFalsy();
+        elem = '<szs-bb-search auto-apply></szs-bb-search>';
+        elem = $compile(elem)(scope);
+        $rootScope.$digest();
+        expect(elem.find('.apply-btn').eq(0).is("[disabled]")).toBeTruthy();
+      });
+
     });
     describe('search string',function(){
       beforeEach(function(){
@@ -189,7 +198,7 @@ describe('module szsBbSearch',function(){
         });
         it('should contain items as .opt-item in panes', function(){
           expect(elem.find('.opt-item').length).toBe(3);
-        })
+        });
         it('should call itemClick when .opt-item clicked', function(){
           iScope = elem.isolateScope();
           spyOn(iScope, "itemClick");
