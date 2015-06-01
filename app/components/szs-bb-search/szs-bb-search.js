@@ -78,11 +78,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
               if (angular.isDefined(searchStr)){
                 req.params.searchStr = searchStr;
               }
-              $http(req).success(function (data) {
-                (setter||angular.noop)(data);
-              }).error(function (data) {
-                (error||angular.noop)(data);
-              });
+              $http(req).success(setter).error(error);
             }
           }
         }
@@ -181,10 +177,16 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           scope.apply={caption:"Search", auto:false, btnClass:"btn-success"};
           scope.request = function(){
             scope.apply.caption = "Wait"; scope.apply.btnClass = "btn-info";
-            szsBbSearchQuery(scope.svcUrl, function(data){
-              scope.szsBoardData = data;
-              scope.apply.caption = "Ok"; scope.apply.btnClass = "btn-success";
-            }).request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
+            szsBbSearchQuery(
+              scope.svcUrl,
+              function(data){
+                scope.szsBoardData = data;
+                scope.apply.caption = "Ok"; scope.apply.btnClass = "btn-success";
+              },
+              function(data, status) {
+                scope.apply.caption = "Error"; scope.apply.btnClass = "btn-danger";
+              }
+            ).request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
           };
           //if auto-apply - set watcher and listener to search string and keylist
           scope.requestTrigger = function(){
