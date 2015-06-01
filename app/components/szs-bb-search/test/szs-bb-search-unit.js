@@ -129,7 +129,37 @@ describe('module szsBbSearch',function(){
         $rootScope.$digest();
         expect(elem.find('.apply-btn').eq(0).is("[disabled]")).toBeTruthy();
       });
+      it('should decorate along change, apply, success, error cycle', function(){
+        $rootScope.$digest();
+        var btn = elem.find('.apply-btn').eq(0);
+        iScope = elem.isolateScope();
+        iScope.searchStr = 'sss';
+        $rootScope.$digest();
+        expect(btn.text()).toBe("Apply");
+        expect(btn.hasClass("btn-primary")).toBeTruthy();
+        $httpBackend.resetExpectations();
+        $httpBackend.expectGET('?searchStr=sss')
+          .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
+        btn.click();
+        expect(btn.text()).toBe("Wait");
+        expect(btn.hasClass("btn-info")).toBeTruthy();
+        $httpBackend.flush();
+        expect(btn.text()).toBe("Ok");
+        expect(btn.hasClass("btn-success")).toBeTruthy();
+        iScope.itemClick({contentType:"option",option:"opt", title:"option"}, {item:"itm", title:"item"});
+        $rootScope.$digest();
+        expect(btn.text()).toBe("Apply");
+        expect(btn.hasClass("btn-primary")).toBeTruthy();
+        $httpBackend.expectGET('?opt=itm&searchStr=sss')
+          .respond(400, '');
+        btn.click();
+        expect(btn.text()).toBe("Wait");
+        expect(btn.hasClass("btn-info")).toBeTruthy();
+        $httpBackend.flush();
+        expect(btn.text()).toBe("Error");
+        expect(btn.hasClass("btn-danger")).toBeTruthy();
 
+      });
     });
     describe('search string',function(){
       beforeEach(function(){

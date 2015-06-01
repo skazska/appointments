@@ -43,7 +43,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
          * returns object with method to do requests to search service by search string and options
          * initialize poling for result change or websocket
          */
-        return function (path, setter) {
+        return function (path, setter, error) {
           var req = {
             method: 'GET',
             url: urlPrefix.concat(path||''),
@@ -80,7 +80,9 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
               }
               $http(req).success(function (data) {
                 (setter||angular.noop)(data);
-              });//.error();
+              }).error(function (data) {
+                (error||angular.noop)(data);
+              });
             }
           }
         }
@@ -171,24 +173,33 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           };
 
           //querying
+          //decorate apply-btn with .btn-info class and "Wait" caption on query start,
+          //.btn-primary and "Apply" on searchStr or keyList change pending
+          //.btn-success and "Ok" on successful request
+          //.btn-danger and "Error" on request error
           //request data method
+          scope.apply={caption:"Search", auto:false, btnClass:"btn-success"};
           scope.request = function(){
+            scope.apply.caption = "Wait"; scope.apply.btnClass = "btn-info";
             szsBbSearchQuery(scope.svcUrl, function(data){
               scope.szsBoardData = data;
+              scope.apply.caption = "Ok"; scope.apply.btnClass = "btn-success";
             }).request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
           };
           //if auto-apply - set watcher and listener to search string and keylist
-          if (angular.isDefined($attrs.autoApply)){
-            //query on search string change
-            scope.$watch('searchStr', function(newVal, oldVal){
-              if (!angular.isDefined(newVal)) newVal = "";
-              if ((newVal.length>=parseInt(scope.minSearchStr))){ scope.request(); }
-            });
-            //query on keyList change
-            keyList.onChange = scope.request;
-            //disable apply-btn
-            scope.applyBtnDisabled = true;
-          }
+          scope.requestTrigger = function(){
+            scope.apply.caption = 'Apply'; scope.apply.btnClass = "btn-primary";
+            if (angular.isDefined($attrs.autoApply)) { scope.request(); }
+          };
+          //query on search string change
+          scope.$watch('searchStr', function(newVal, oldVal){
+            if (!angular.isDefined(newVal)) newVal = "";
+            if ((newVal.length>=parseInt(scope.minSearchStr))){ scope.requestTrigger(); }
+          });
+          //query on keyList change
+          keyList.onChange = scope.requestTrigger;
+          //disable apply-btn
+          scope.apply.auto = angular.isDefined($attrs.autoApply);
 
           //init JQuery sortable with responsivness
           scope.sortOptions = {axis:'y'};

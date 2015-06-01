@@ -8,7 +8,10 @@
                         ng-model-options="{ debounce: 1000 }">
             </div>
             <div class="col-lg-1 col-sm-2 col-xs-3">
-                <button class="btn apply-btn" ng-click="request()" ng-disabled="applyBtnDisabled">Search
+                <button class="apply-btn btn {{apply.btnClass}}"
+                        ng-click="request()"
+                        ng-disabled="apply.auto"
+                        ng-bind="apply.caption">
                 </button>
             </div>
         </div>
