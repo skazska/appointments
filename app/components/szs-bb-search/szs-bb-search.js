@@ -21,64 +21,70 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
  *  search string change, and by poling or websocket
  *
  */
-  .provider('szsBbSearchQuery', function szsBbSearchQueryProvider (){
-    var urlPrefix = '';
-    this.urlPrefix = function(val) {
-      if (angular.isDefined(val)) {
-        urlPrefix = val;
-      }
-      return urlPrefix;
-    };
-
-    this.$get = ['$http', function($http){
-      /**
-       * @ngdoc method
-       * @name constructor
-       * @methodOf szsBbSearch.szsBbSearchQuery
-       * @param {string} path - url path to web service
-       * @param {string|object} searchStr - search string
-       * @param {object} opts - search options
-       * @param {function(data)} setter - result data setter
-       * @description
-       * returns object with method to do requests to search service by search string and options
-       * initialize poling for result change or websocket
-       */
-      return function(path, setter){
-        var req = {
-          method: 'GET',
-          url: urlPrefix.concat(path),
-          params: {},
-          headers:{}
-        };
-        return {
-          /**
-           * @ngdoc method
-           * @name req
-           * @description
-           * @methodOf szsBbSearch.szsBbSearchQuery
-           * @returns {Object} request specs
-           */
-          req: function(){ return req; },
-          /**
-           * @ngdoc method
-           * @name request
-           * @methodOf szsBbSearch.szsBbSearchQuery
-           * @param {string} searchStr - search string
-           * @param {object} opts - search options
-           * @description
-           *
-           */
-          request: function(searchStr, opts) {
-            req.params = angular.copy(opts);
-            req.params.searchStr = searchStr;
-            $http(req).success(function(data){
-              setter(data);
-            });//.error();
+  .provider('szsBbSearchQuery', [
+    function szsBbSearchQueryProvider () {
+      var urlPrefix = '';
+      this.urlPrefix = function (val) {
+        if (angular.isDefined(val)) {
+          urlPrefix = val;
+        }
+        return urlPrefix;
+      };
+      this.$get = ['$http', function ($http) {
+        /**
+         * @ngdoc method
+         * @name constructor
+         * @methodOf szsBbSearch.szsBbSearchQuery
+         * @param {string} path - url path to web service
+         * @param {string|object} searchStr - search string
+         * @param {object} opts - search options
+         * @param {function(data)} setter - result data setter
+         * @description
+         * returns object with method to do requests to search service by search string and options
+         * initialize poling for result change or websocket
+         */
+        return function (path, setter, error) {
+          var req = {
+            method: 'GET',
+            url: urlPrefix.concat(path||''),
+            params: {},
+            headers: {},
+            responseType: "json"
+          };
+          return {
+            /**
+             * @ngdoc method
+             * @name req
+             * @description
+             * @methodOf szsBbSearch.szsBbSearchQuery
+             * @returns {Object} request specs
+             */
+            req: function () {
+              return req;
+            },
+            /**
+             * @ngdoc method
+             * @name request
+             * @methodOf szsBbSearch.szsBbSearchQuery
+             * @param {string} searchStr - search string
+             * @param {object} opts - search options
+             * @description
+             *
+             */
+            request: function (searchStr, opts) {
+              if (angular.isDefined(opts)){
+                req.params = angular.copy(opts);
+              }
+              if (angular.isDefined(searchStr)){
+                req.params.searchStr = searchStr;
+              }
+              $http(req).success(setter).error(error);
+            }
           }
         }
-      }
-    }];
-  })
+      }];
+    }
+  ])
 /**
  * @ngdoc service
  * @name szsBbSearch.szsBbSearchKeyListOpts
@@ -121,47 +127,36 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         restrict: 'E',
         scope: {
           svcUrl: '@',
-          searchStr: '@'
+          searchStr: '@',
+          minSearchStr: '@',
+          autoApply: '@'
         },
-        controller: function($scope) {//, $element, $attrs, $transclude, otherInjectables) { ... },
+        controller: function($scope, $element, $attrs){//, $transclude, otherInjectables) { ... },
+          var scope = $scope;
+          if (angular.isDefined(scope.minSearchStr)) { scope.minSearchStr = parseInt(scope.minSearchStr); }
+          else { scope.minSearchStr = 0; }
+          //key list
+          var keyList = szsKeyList();
+          scope.szsKeyList = keyList;
+
+          //board data
+          scope.szsBoardData = [];
+          //reorder list of boards
           function upTop(i){
             i = scope.szsBoardData.splice(i,1);
             scope.szsBoardData.splice(0,0,i[0]);
           }
-          var scope = $scope;
+          //assign boards reorder method to controller
           this.upTop = upTop;
-          var keyList = szsKeyList();
-          scope.szsKeyList = keyList;
-          scope.szsBoardData = [];
-          var query = szsBbSearchQuery(scope.svcUrl, function(data){
-            scope.szsBoardData = data
-          });
+          //assign boards reorder on click method to scope
           scope.tabClick = function(evt){
             var target = angular.element(evt.delegateTarget);
             if (target.hasClass('szs-bb-search-tab')) {
               var i = target.attr('data-szs-bb-search-tab');
               upTop(i);
             }
-
           };
-
-          scope.$watch('searchStr', function(){
-            query.request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
-          });
-          keyList.onChange = function(){
-            query.request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
-          };
-
-          scope.sortOptions = {axis:'y'};
-          if ($window.innerWidth<768){ scope.sortOptions.axis = 'x'; }
-          $window.onresize = function(){
-            if ($window.innerWidth<768){
-              scope.$apply("sortOptions.axis = 'x'");
-            } else {
-              scope.$apply("sortOptions.axis = 'y'");
-            }
-          };
-
+          //assign board items click handler
           scope.itemClick = function(option, item) {
             switch (option.contentType) {
               case 'option':
@@ -172,9 +167,54 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
                 break;
             }
           };
+
+          //querying
+          //decorate apply-btn with .btn-info class and "Wait" caption on query start,
+          //.btn-primary and "Apply" on searchStr or keyList change pending
+          //.btn-success and "Ok" on successful request
+          //.btn-danger and "Error" on request error
+          //request data method
+          scope.apply={caption:"Search", auto:false, btnClass:"btn-success"};
+          scope.request = function(){
+            scope.apply.caption = "Wait"; scope.apply.btnClass = "btn-info";
+            szsBbSearchQuery(
+              scope.svcUrl,
+              function(data){
+                scope.szsBoardData = data;
+                scope.apply.caption = "Ok"; scope.apply.btnClass = "btn-success";
+              },
+              function(data, status) {
+                scope.apply.caption = "Error"; scope.apply.btnClass = "btn-danger";
+              }
+            ).request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
+          };
+          //if auto-apply - set watcher and listener to search string and keylist
+          scope.requestTrigger = function(){
+            scope.apply.caption = 'Apply'; scope.apply.btnClass = "btn-primary";
+            if (angular.isDefined($attrs.autoApply)) { scope.request(); }
+          };
+          //query on search string change
+          scope.$watch('searchStr', function(newVal, oldVal){
+            if (!angular.isDefined(newVal)) newVal = "";
+            if ((newVal.length>=parseInt(scope.minSearchStr))){ scope.requestTrigger(); }
+          });
+          //query on keyList change
+          keyList.onChange = scope.requestTrigger;
+          //disable apply-btn
+          scope.apply.auto = angular.isDefined($attrs.autoApply);
+
+          //init JQuery sortable with responsivness
+          scope.sortOptions = {axis:'y'};
+          if ($window.innerWidth<768){ scope.sortOptions.axis = 'x'; }
+          $window.onresize = function(){
+            if ($window.innerWidth<768){
+              scope.$apply("sortOptions.axis = 'x'");
+            } else {
+              scope.$apply("sortOptions.axis = 'y'");
+            }
+          };
+
         },
-//        link: function(scope) { //, elt, attrs, ctrl){
-//        },
         templateUrl: 'components/szs-bb-search/szs-bb-search.html'
       }
     }
