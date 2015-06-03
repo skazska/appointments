@@ -78,7 +78,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
               if (angular.isDefined(searchStr)){
                 req.params.searchStr = searchStr;
               }
-              $http(req).success(setter).error(error);
+              $http(req).success(setter||angular.noop).error(error||angular.noop);
             }
           }
         }
