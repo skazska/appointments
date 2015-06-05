@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
  * @ngdoc overview
  * @name szsBoard
@@ -22,7 +22,7 @@ angular.module('szsBoard', [])
   .directive('szsBoardPane', [function(){
     return{
       restrict: 'A',
-      require: '^?szsBbSearch',
+      require: '^?szsDashSearch',
       transclude: true,
       scope: {
         title:'@',

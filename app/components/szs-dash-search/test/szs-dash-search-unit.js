@@ -1,15 +1,15 @@
 'use strict';
 
-describe('module szsBbSearch',function(){
-  describe('szsBbSearchQueryProvider', function(){
+describe('module szsDashSearch',function(){
+  describe('szsDashSearchQueryProvider', function(){
     var prv, srv;
     beforeEach(function(){
-      angular.module('testMod',['szsBbSearch']).config(function(szsBbSearchQueryProvider){
-        prv = szsBbSearchQueryProvider;
+      angular.module('testMod',['szsDashSearch']).config(function(szsDashSearchQueryProvider){
+        prv = szsDashSearchQueryProvider;
       });
       module('testMod');
-      inject(function(szsBbSearchQuery){
-        srv = szsBbSearchQuery;}
+      inject(function(szsDashSearchQuery){
+        srv = szsDashSearchQuery;}
       );
     });
     it('should have urlPrefix to configure', function() {
@@ -23,23 +23,23 @@ describe('module szsBbSearch',function(){
       expect(inst.req().url).toBe('data/search.json');
     });
   });
-  describe('szsBbSearchQuery', function() {
-    var $httpBackend, szsBbSearchQuery, szsKeyList, szsBbSearchKeyListOpts;
+  describe('szsDashSearchQuery', function() {
+    var $httpBackend, szsDashSearchQuery, szsKeyList, szsDashSearchKeyListOpts;
     var inst, result, opts;
-    beforeEach(module('szsBbSearch'));
-    beforeEach(inject(function (_$httpBackend_, _szsBbSearchQuery_, _szsKeyList_, _szsBbSearchKeyListOpts_) {
+    beforeEach(module('szsDashSearch'));
+    beforeEach(inject(function (_$httpBackend_, _szsDashSearchQuery_, _szsKeyList_, _szsDashSearchKeyListOpts_) {
       $httpBackend = _$httpBackend_;
-      szsBbSearchQuery = _szsBbSearchQuery_;
+      szsDashSearchQuery = _szsDashSearchQuery_;
       szsKeyList = _szsKeyList_;
-      szsBbSearchKeyListOpts = _szsBbSearchKeyListOpts_;
+      szsDashSearchKeyListOpts = _szsDashSearchKeyListOpts_;
 
       opts = szsKeyList();
       opts.add('opt', 'itm', 'option', 'item');
       opts.add('opt', 'itm2', 'option', 'item2');
       opts.add('opt1', 'itm3', 'option', 'item2');
-      opts = szsBbSearchKeyListOpts(opts.opts);
+      opts = szsDashSearchKeyListOpts(opts.opts);
 
-      inst = szsBbSearchQuery('search', function (res) {
+      inst = szsDashSearchQuery('search', function (res) {
         result = res;
       });
       result = null;
@@ -58,25 +58,25 @@ describe('module szsBbSearch',function(){
     it('should perform empty request ', function(){
       $httpBackend.expectGET('')
         .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-      szsBbSearchQuery(undefined, function (res) { result = res; }).request();
+      szsDashSearchQuery(undefined, function (res) { result = res; }).request();
       $httpBackend.flush();
       expect(result).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
     });
     it('should perform request with params', function(){
       $httpBackend.expectGET('search?opt=itm&opt=itm2&opt1=itm3&searchStr=abc')
         .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-      szsBbSearchQuery('search', function (res) { result = res; }).request('abc', opts);
+      szsDashSearchQuery('search', function (res) { result = res; }).request('abc', opts);
       $httpBackend.flush();
       expect(result).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
     });
   });
-  describe('szsBbSearchKeyListOpts', function(){
+  describe('szsDashSearchKeyListOpts', function(){
     var srv;
 
-    beforeEach(module('szsBbSearch'));
+    beforeEach(module('szsDashSearch'));
 
-    beforeEach(inject(function(szsBbSearchKeyListOpts){
-      srv = szsBbSearchKeyListOpts;
+    beforeEach(inject(function(szsDashSearchKeyListOpts){
+      srv = szsDashSearchKeyListOpts;
     }));
 
     it("Should convert szsKeyList options data {opt:{title:'o',items:{itm:{title:'i'}}}} to {opt:['itm']}", function(){
@@ -85,13 +85,13 @@ describe('module szsBbSearch',function(){
       expect(srv(input)).toEqual(output);
     });
   });
-  describe('szsBbSearch directive', function(){
+  describe('szsDashSearch directive', function(){
     var $compile, $rootScope, $httpBackend;
     var scope, iScope, elem;
     beforeEach(function(){
 
       module('templates');
-      module('szsBbSearch');
+      module('szsDashSearch');
     });
     beforeEach(inject(function(_$compile_, _$rootScope_, _$httpBackend_){
       $compile = _$compile_;
@@ -103,7 +103,7 @@ describe('module szsBbSearch',function(){
     describe('apply and auto apply', function(){
       beforeEach(function(){
         $httpBackend.expectGET('').respond([]);
-        elem = '<szs-bb-search ></szs-bb-search>';
+        elem = '<szs-dash-search ></szs-dash-search>';
         elem = $compile(elem)(scope);
       });
       it('should contain element with class apply-btn', function(){
@@ -111,7 +111,7 @@ describe('module szsBbSearch',function(){
         expect(elem.find('.apply-btn').length).toBe(1);
       });
       it('should initiate search request if auto-apply is set', function(){
-        elem = '<szs-bb-search auto-apply></szs-bb-search>';
+        elem = '<szs-dash-search auto-apply></szs-dash-search>';
         elem = $compile(elem)(scope);
         expect($httpBackend.flush).not.toThrow();
       });
@@ -124,7 +124,7 @@ describe('module szsBbSearch',function(){
       it('disable apply button when aut-apply is set', function(){
         $rootScope.$digest();
         expect(elem.find('.apply-btn').eq(0).is("[disabled]")).toBeFalsy();
-        elem = '<szs-bb-search auto-apply></szs-bb-search>';
+        elem = '<szs-dash-search auto-apply></szs-dash-search>';
         elem = $compile(elem)(scope);
         $rootScope.$digest();
         expect(elem.find('.apply-btn').eq(0).is("[disabled]")).toBeTruthy();
@@ -164,7 +164,7 @@ describe('module szsBbSearch',function(){
     describe('search string',function(){
       beforeEach(function(){
         $httpBackend.expectGET('').respond([]);
-        elem = '<szs-bb-search ></szs-bb-search>';
+        elem = '<szs-dash-search ></szs-dash-search>';
         elem = $compile(elem)(scope);
       });
       it('should be present in szs-search-string with searchStr model link', function(){
@@ -174,7 +174,7 @@ describe('module szsBbSearch',function(){
       it('Should not request search if search string len less than min-search-str',function(){
         $httpBackend.expectGET('?searchStr=src')
           .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-        elem = '<szs-bb-search search-str="src" min-search-str="4" auto-apply></szs-bb-search>';
+        elem = '<szs-dash-search search-str="src" min-search-str="4" auto-apply></szs-dash-search>';
         elem = $compile(elem)(scope);
         expect($httpBackend.flush).toThrow();
       });
@@ -182,7 +182,7 @@ describe('module szsBbSearch',function(){
     describe('keyList', function(){
       beforeEach(function(){
         $httpBackend.expectGET('').respond([]);
-        elem = '<szs-bb-search ></szs-bb-search>';
+        elem = '<szs-dash-search ></szs-dash-search>';
         elem = $compile(elem)(scope);
       });
       it('should be present with scope link set by szs-key-list attribute', function(){
@@ -199,21 +199,21 @@ describe('module szsBbSearch',function(){
           respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
             ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
               ,{item: 'item2', title: 'item2'}]}]);
-        elem = '<szs-bb-search svc-url="test" auto-apply></szs-bb-search>';
+        elem = '<szs-dash-search svc-url="test" auto-apply></szs-dash-search>';
         elem = $compile(elem)(scope);
         $httpBackend.flush();
         $rootScope.$digest();
       });
       describe('tabs', function(){
-        it('should be presented as .szs-bb-search-tabs element with .szs-bb-search-tab elements inside', function(){
-          expect(elem.find('.szs-bb-search-tabs .szs-bb-search-tab').length).toBe(2);
+        it('should be presented as .szs-dash-search-tabs element with .szs-dash-search-tab elements inside', function(){
+          expect(elem.find('.szs-dash-search-tabs .szs-dash-search-tab').length).toBe(2);
         });
-        it('should reorder szsBoardData model when .szs-bb-search-tab is clicked', function(){
+        it('should reorder szsBoardData model when .szs-dash-search-tab is clicked', function(){
           iScope = elem.isolateScope();
           expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}
             ,{option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
               ,{item: 'item2', title: 'item2'}]}]);
-          elem.find('.szs-bb-search-tabs .szs-bb-search-tab').eq(1).click();
+          elem.find('.szs-dash-search-tabs .szs-dash-search-tab').eq(1).click();
           $rootScope.$digest();
           expect(iScope.szsBoardData).toEqual([
             {option: 'test1', title:'test1', items:[{item: 'item1', title: 'item1'}
@@ -241,14 +241,14 @@ describe('module szsBbSearch',function(){
       it('Should request search and set response to szsBoardData',function(){
         $httpBackend.expectGET('test?searchStr=srch')
           .respond([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
-        elem = '<szs-bb-search svc-url="test" search-str="srch" auto-apply></szs-bb-search>';
+        elem = '<szs-dash-search svc-url="test" search-str="srch" auto-apply></szs-dash-search>';
         elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
         iScope = elem.isolateScope();
         expect(iScope.szsBoardData).toEqual([{option: 'test', title:'test', items:[{item: 'item', title: 'item'}]}]);
       });
       it('Should send request with searchStr param, on searchStr scope value change', function(){
         $httpBackend.expectGET('test').respond([]);
-        elem = $compile('<szs-bb-search svc-url="test" auto-apply></szs-bb-search>')(scope);
+        elem = $compile('<szs-dash-search svc-url="test" auto-apply></szs-dash-search>')(scope);
         $httpBackend.flush(); $rootScope.$digest();
         iScope = elem.isolateScope();
         expect(iScope.szsBoardData).toEqual([]);
@@ -274,10 +274,10 @@ describe('module szsBbSearch',function(){
         $httpBackend.expectGET('test').
           respond([{option: 'test', title:'test'},{option: 'test1', title:'test1'},{option: 'test2', title:'test2'}]);
         elem = $compile(elem)(scope); $httpBackend.flush(); $rootScope.$digest();
-        var tabs = elem.find('.szs-bb-search-tab');
+        var tabs = elem.find('.szs-dash-search-tab');
         expect(tabs.eq(0).html()).toContain('test');
         tabs.eq(1).click(); //$rootScope.$digest();
-        tabs = elem.find('.szs-bb-search-tab');
+        tabs = elem.find('.szs-dash-search-tab');
         expect(tabs.eq(0).html()).toContain('test1');
       });
     });

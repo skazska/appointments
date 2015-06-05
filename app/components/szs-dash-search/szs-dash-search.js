@@ -2,18 +2,18 @@
 
 /**
  * @ngdoc overview
- * @name szsBbSearch
- * @module szsBbSearch
+ * @name szsDashSearch
+ * @module szsDashSearch
  * @description
  * Provides a directive to create search dashboard, using search input, search options and result dashboard.
  *
  * It should request search by search string and options
  */
-angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
+angular.module('szsDashSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
 /**
  * @ngdoc object
- * @name szsBbSearch.szsBbSearchQuery
- * @module szsBbSearch
+ * @name szsDashSearch.szsDashSearchQuery
+ * @module szsDashSearch
  * @description
  * service for search server querying
  * configurable: the zsBbSearchQueryProvider expose method  urlPrefix  to set|get urlPrefix ant configuration
@@ -21,8 +21,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
  *  search string change, and by poling or websocket
  *
  */
-  .provider('szsBbSearchQuery', [
-    function szsBbSearchQueryProvider () {
+  .provider('szsDashSearchQuery', [
+    function szsDashSearchQueryProvider () {
       var urlPrefix = '';
       this.urlPrefix = function (val) {
         if (angular.isDefined(val)) {
@@ -34,7 +34,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
         /**
          * @ngdoc method
          * @name constructor
-         * @methodOf szsBbSearch.szsBbSearchQuery
+         * @methodOf szsDashSearch.szsDashSearchQuery
          * @param {string} path - url path to web service
          * @param {string|object} searchStr - search string
          * @param {object} opts - search options
@@ -56,7 +56,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
              * @ngdoc method
              * @name req
              * @description
-             * @methodOf szsBbSearch.szsBbSearchQuery
+             * @methodOf szsDashSearch.szsDashSearchQuery
              * @returns {Object} request specs
              */
             req: function () {
@@ -65,7 +65,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
             /**
              * @ngdoc method
              * @name request
-             * @methodOf szsBbSearch.szsBbSearchQuery
+             * @methodOf szsDashSearch.szsDashSearchQuery
              * @param {string} searchStr - search string
              * @param {object} opts - search options
              * @description
@@ -87,14 +87,14 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
   ])
 /**
  * @ngdoc service
- * @name szsBbSearch.szsBbSearchKeyListOpts
- * @module szsBbSearch
+ * @name szsDashSearch.szsDashSearchKeyListOpts
+ * @module szsDashSearch
  * @param {szsKeyList.szsKeyList} opts - keyList options data
  * @returns {Object} - options in form {opt:['itm']}
  * @description
  * service convert szsKeyList options data {opt:{title:'o',items:{itm:{title:'i'}}}} to {opt:['itm']}
  */
-  .factory('szsBbSearchKeyListOpts', function(){
+  .factory('szsDashSearchKeyListOpts', function(){
     return function(opts){
       var res = {};
       angular.forEach(opts, function(val, key){
@@ -108,8 +108,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
   })
 /**
  * @ngdoc directive
- * @name szsBbSearch.szsBbSearch
- * @module szsBbSearch
+ * @name szsDashSearch.szsDashSearch
+ * @module szsDashSearch
  * @restrict 'E'
  * @param {attribute} svcUrl - url to search service
  * @param {attribute} searchStr - search string
@@ -121,8 +121,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
  * watcher for searchStr and event listener for keyList change
  * itemClick function for
  */
-  .directive('szsBbSearch',['$http', '$window','szsKeyList', 'szsBbSearchQuery', 'szsBbSearchKeyListOpts',
-    function($http, $window, szsKeyList, szsBbSearchQuery, szsBbSearchKeyListOpts){
+  .directive('szsDashSearch',['$http', '$window','szsKeyList', 'szsDashSearchQuery', 'szsDashSearchKeyListOpts',
+    function($http, $window, szsKeyList, szsDashSearchQuery, szsDashSearchKeyListOpts){
       return {
         restrict: 'E',
         scope: {
@@ -151,8 +151,8 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           //assign boards reorder on click method to scope
           scope.tabClick = function(evt){
             var target = angular.element(evt.delegateTarget);
-            if (target.hasClass('szs-bb-search-tab')) {
-              var i = target.attr('data-szs-bb-search-tab');
+            if (target.hasClass('szs-dash-search-tab')) {
+              var i = target.attr('data-szs-dash-search-tab');
               upTop(i);
             }
           };
@@ -177,7 +177,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           scope.apply={caption:"Search", auto:false, btnClass:"btn-success"};
           scope.request = function(){
             scope.apply.caption = "Wait"; scope.apply.btnClass = "btn-info";
-            szsBbSearchQuery(
+            szsDashSearchQuery(
               scope.svcUrl,
               function(data){
                 scope.szsBoardData = data;
@@ -186,7 +186,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
               function(data, status) {
                 scope.apply.caption = "Error"; scope.apply.btnClass = "btn-danger";
               }
-            ).request(scope.searchStr, szsBbSearchKeyListOpts(keyList.opts));
+            ).request(scope.searchStr, szsDashSearchKeyListOpts(keyList.opts));
           };
           //if auto-apply - set watcher and listener to search string and keylist
           scope.requestTrigger = function(){
@@ -215,7 +215,7 @@ angular.module('szsBbSearch', ['szsKeyList', 'szsBoard', 'ui.sortable'])
           };
 
         },
-        templateUrl: 'components/szs-bb-search/szs-bb-search.html'
+        templateUrl: 'components/szs-dash-search/szs-dash-search.html'
       }
     }
   ])
