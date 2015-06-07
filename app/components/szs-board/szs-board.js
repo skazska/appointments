@@ -57,7 +57,7 @@
             }
           }
         },
-        templateUrl: 'components/szs-board/szs-board-pane.html'
+        templateUrl: 'templates/szs-board-pane.html'
       }
 
     }]);

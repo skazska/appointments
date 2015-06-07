@@ -1,0 +1,79 @@
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+  cursor: pointer;
+}
+.szs-dash-search-tabs {
+  padding: 1em 0;
+}
+.szs-dash-search-tab {
+  display: inline-block;
+  padding: 1em 0;
+  cursor: pointer;
+}
+.szs-dash-search-tab img {
+  height: 50px;
+  width: 50px;
+}
+.szs-key-list-panel {
+  display: block;
+  padding: 0.5em 0;
+}
+.szs-key-list {
+  display: inline-block;
+  border-radius: 1em;
+  border: 1px dotted #000000;
+  padding: 0.2em 0.2em 0.2em 0.5em;
+  margin: 0.2em;
+}
+.szs-key-list ul {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+.szs-key-list li {
+  display: inline-block;
+  margin: 0 0 0 0.1em;
+  padding: 0 0.5em;
+  border-radius: 1em;
+  border: 1px dotted #000000;
+}
+.szs-key-list-button {
+  cursor: pointer;
+}
+.szs-board-pane-header img {
+  height: 50px;
+  width: 50px;
+}
+.szs-board-pane-body {
+  padding: 0.5em;
+}
+.szs-board-pane-header .tie {
+  float: right;
+}
+.szs-board-pane-header .tie img {
+  height: 20px;
+  width: 20px;
+}
+.szs-board-pane.ui-widget-content.ui-resizable {
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .szs-dash-search-tab {
+    display: block;
+  }
+  .szs-dash-search-tab img {
+    height: 50px;
+    width: 50px;
+  }
+}
+@media (min-width: 992px) {
+  .szs-dash-search-tab {
+    display: block;
+  }
+  .szs-dash-search-tab img {
+    height: 100px;
+    width: 100px;
+  }
+}

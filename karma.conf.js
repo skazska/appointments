@@ -4,7 +4,7 @@ module.exports = function(config){
     basePath : './',
 
     preprocessors: {
-      'app/components/**/*.html': ['ng-html2js']
+      'app/templates/*.html': ['ng-html2js']
     },
 
     ngHtml2JsPreprocessor: {
@@ -24,7 +24,7 @@ module.exports = function(config){
       'app/bower_components/angular-ui-sortable/sortable.js',
 
       'app/components/**/*.js',
-      'app/components/**/*.html'
+      'app/templates/*.html'
     ],
 
     autoWatch : true,

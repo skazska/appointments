@@ -104,7 +104,7 @@
             scope.keyList.del(optKey);
           }
         },
-        templateUrl: 'components/szs-key-list/szs-key-list-panel.html'
+        templateUrl: 'templates/szs-key-list-panel.html'
       }
     }]);
 })(window, window.angular);
