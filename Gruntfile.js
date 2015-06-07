@@ -10,11 +10,24 @@ module.exports = function(grunt) {
       api: {
         src: ["app/components/*/*.js", "!app/components/test/*"]
       }
+    },
+    concat: {
+      options: {
+        separator: ";\n"
+      },
+      dist: {
+        src:["app/components/szs-board/szs-board.js",
+          "app/components/szs-key-list/szs-key-list.js",
+          "app/components/szs-dash-search/szs-dash-search.js"
+        ],
+        dest: "dist/szs-dash-search.js"
+      }
     }
   });
 
   // Load the plugin that provides the "docular" tasks.
   grunt.loadNpmTasks('grunt-ngdocs');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.registerTask('docs', ['ngdocs']);
 
