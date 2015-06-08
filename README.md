@@ -1,3 +1,34 @@
+#szs-dash-search 
+
+An angular JS based front-end application to use with so-called service. 
+
+Consists of search string text input, managed key-list filter options, and search 
+results dashboard with tab-like results block handler.
+
+##dist
+
+    Dist structure:
+    |->images
+    |  '->szs-board
+    |     |->down_bottom.svg
+    |     |->full_window.svg
+    |     |->half_window.svg
+    |     |->none_window.svg
+    |     '->up_top.svg
+    |->templates
+    |  |->szs-board-pane.html 
+    |  |->szs-dash-search.html 
+    |  '->szs-key-list-panel.html 
+    |->szs-dash-search.css
+    '->szs-dash-search.js
+
+Folders images and templates should be on same level with html page location.
+
+
+
+
+
+
 # angular-seed — the seed for AngularJS apps
 
 This project is an application skeleton for a typical [AngularJS](http://angularjs.org/) web app.

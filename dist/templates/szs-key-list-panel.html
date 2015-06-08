@@ -1,0 +1,10 @@
+<div class="szs-key-list" ng-repeat="(optKey, option) in keyList.opts" ng-click="optClick(optKey, $event)"  ng-show="option.items">
+    <span class="szs-key-list-button" ng-click="optDel(optKey)">&#10006;</span>
+    <span ng-bind="option.title"></span>
+    <ul>
+        <li class="szs-key-list-item " ng-repeat="(itemKey, item) in option.items">
+            <span class="szs-key-list-button remove" data-szs-item="{{itemKey}}">&#10006;</span>
+            <span ng-bind="item.title"></span>
+        </li>
+    </ul>
+</div>

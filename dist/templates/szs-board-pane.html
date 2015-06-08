@@ -1,0 +1,17 @@
+<div class="szs-board-pane ui-widget-content" ng-click="action($event)" >
+    <div class="szs-board-pane-header ui-widget-header">
+        <img class="logo" ng-src="{{logo}}"/>
+        <span>
+            <span class="title" ng-bind="title"></span>
+            <span class="tie" >
+                <img ng-src="img/szs-board/up_top.svg" data-action="top"/>
+                <img ng-src="img/szs-board/none_window.svg" data-action="min"/>
+                <img ng-src="img/szs-board/half_window.svg" data-action="med"/>
+                <img ng-src="img/szs-board/full_window.svg" data-action="max"/>
+            </span>
+        </span>
+    </div>
+    <div class="szs-board-pane-body" ng-transclude="">
+    </div>
+    <div class="ui-resizable-handle ui-resizable-s" ></div>
+</div>

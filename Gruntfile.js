@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       options: {
         dest: "docs"
       },
-      api: {
+      build: {
         src: ["app/components/*/*.js", "!app/components/test/*"]
       }
     },
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       options: {
         separator: ";\n"
       },
-      dist: {
+      build: {
         src:["app/components/szs-board/szs-board.js",
           "app/components/szs-key-list/szs-key-list.js",
           "app/components/szs-dash-search/szs-dash-search.js"
@@ -24,17 +24,23 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      main: {
+      build: {
         files: [
           // includes files within path
-          {src: ['app/templates'], dest: 'dist/templates'}
+          {expand: true, cwd:'app/templates/',  src: ['**'], dest: 'dist/templates/'},
+          {expand: true, cwd: 'app/img/', src: ['**'], dest: 'dist/images/'}
         ]
       }
     },
+    clean: {
+      build: {
+        src: ["dist"]
+      }
+    },
     less: {
-      production: {
+      build: {
         options: {
-          paths: ["app/components/*"],
+          paths: ["app/components/*"]
         },
         files: {
           "dist/szs-dash-search.css": "app/app.less"
@@ -45,12 +51,15 @@ module.exports = function(grunt) {
 
   // Load the plugin that provides the "docular" tasks.
   grunt.loadNpmTasks('grunt-ngdocs');
-  grunt.loadNpmTasks('grunt-contrib-concat');
+
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
 
   grunt.registerTask('docs', ['ngdocs']);
-  grunt.registerTask('build', ['concat', 'copy', 'less']);
+  grunt.registerTask('build', ['clean', 'copy', 'concat', 'less']);
 
   // Default task(s).
 //  grunt.registerTask('default', ['uglify']);

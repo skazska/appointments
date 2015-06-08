@@ -1,9 +1,9 @@
 {
-  "name": "appointments",
+  "name": "szs-dash_search",
   "private": false,
   "version": "0.0.1",
-  "description": "front-end client app for appointments service, presenting search results in dashboard, imply search string and filter options",
-  "repository": "https://github.com/skazska/appointments",
+  "description": "angular based front-end client app for szs-dash-search service, presenting search results in dashboard, imply search string and filter options",
+  "repository": "https://github.com/skazska/szs-dash-search",
   "license": "MIT",
   "devDependencies": {
     "bower": ">=1.3.1",
@@ -22,7 +22,8 @@
     "karma-ng-html2js-preprocessor": ">=0.1.2",
     "less": "^2.5.0",
     "protractor": ">=1.1.1",
-    "shelljs": ">=0.2.6"
+    "shelljs": ">=0.2.6",
+    "grunt-contrib-clean": "~0.6.0"
   },
   "scripts": {
     "less": "lessc app/app.less",
