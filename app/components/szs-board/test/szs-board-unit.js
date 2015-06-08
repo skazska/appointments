@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mockBbSearch', []).directive('szsBbSearch',function(){
+angular.module('mockBbSearch', []).directive('szsDashSearch',function(){
   return {
     controller: function($scope){
       this.upTop = function(i){return true;}
@@ -22,7 +22,7 @@ describe('module szs-board', function(){
       $rootScope = _$rootScope_;
       $controller = _$controller_;
       scope = $rootScope.$new();
-      elt = angular.element('<szs-bb-search><div szs-board-pane title="title" logo="url" position="9">Hello!</div></szs-bb-search>');
+      elt = angular.element('<szs-dash-search><div szs-board-pane title="title" logo="url" position="9">Hello!</div></szs-dash-search>');
       elt = $compile(elt)(scope);
       $rootScope.$digest();
     }));
@@ -43,8 +43,8 @@ describe('module szs-board', function(){
       expect(header.find('.title').text()).toBe("title");
 
     });
-    it('should be linkable with szsBbSearch directive and call upTop method on "top" action', function(){
-      var ctrl = elt.controller('szsBbSearch');
+    it('should be linkable with szsDashSearch directive and call upTop method on "top" action', function(){
+      var ctrl = elt.controller('szsDashSearch');
       spyOn(ctrl, 'upTop');
       elt.find('.tie [data-action=top]').click();
       expect(ctrl.upTop).toHaveBeenCalledWith('9');

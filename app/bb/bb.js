@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('appointments.bb', ['ngRoute', 'szsBbSearch'])
+angular.module('appointments.bb', ['ngRoute', 'szsDashSearch'])
 
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/bb', {

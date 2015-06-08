@@ -1,4 +1,4 @@
-<div class="szs-bb-search" >
+<div class="szs-dash-search" >
     <form class="szs-search-string ">
         <div class="row">
             <div class="col-lg-11 col-sm-10 col-xs-9 form-group">
@@ -27,11 +27,11 @@
     </form>
     <div class="row">
         <div class="col-sm-2">
-            <ul class="szs-bb-search-tabs" ui-sortable="sortOptions"
+            <ul class="szs-dash-search-tabs" ui-sortable="sortOptions"
                  ng-model="szsBoardData" >
-                <li class="szs-bb-search-tab"
+                <li class="szs-dash-search-tab"
                     ng-repeat="cat in szsBoardData track by cat.option"
-                    data-szs-bb-search-tab="{{$index}}"
+                    data-szs-dash-search-tab="{{$index}}"
                     ng-click="tabClick($event)">
                     <img ng-src="{{cat.logo}}">
                     <span ng-bind="cat.title"></span>

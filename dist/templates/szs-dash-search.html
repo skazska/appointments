@@ -1,0 +1,55 @@
+<div class="szs-dash-search" >
+    <form class="szs-search-string ">
+        <div class="row">
+            <div class="col-lg-11 col-sm-10 col-xs-9 form-group">
+                <label for="szs-search-string" class="sr-only">Поиск</label>
+                <input placeholder="Поиск" id="szs-search-string"
+                        class="form-control" ng-model="searchStr"
+                        ng-model-options="{ debounce: 1000 }">
+            </div>
+            <div class="col-lg-1 col-sm-2 col-xs-3">
+                <button class="apply-btn btn {{apply.btnClass}}"
+                        ng-click="request()"
+                        ng-disabled="apply.auto"
+                        ng-bind="apply.caption">
+                </button>
+            </div>
+        </div>
+        <div class="filters row" id="filters">
+            <div class="col-sm-12 ">
+                <szs-key-list-panel
+                        szs-key-list="szsKeyList"
+                        >
+                </szs-key-list-panel>
+
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-sm-2">
+            <ul class="szs-dash-search-tabs" ui-sortable="sortOptions"
+                 ng-model="szsBoardData" >
+                <li class="szs-dash-search-tab"
+                    ng-repeat="cat in szsBoardData track by cat.option"
+                    data-szs-dash-search-tab="{{$index}}"
+                    ng-click="tabClick($event)">
+                    <img ng-src="{{cat.logo}}">
+                    <span ng-bind="cat.title"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-10">
+            <div szs-board-pane ng-repeat="cat in szsBoardData track by cat.option"
+                title="{{cat.title}}"
+                logo="{{cat.logo}}"
+                position="{{$index}}">
+                <span class="opt-item"
+                      ng-repeat="itm in cat.items track by itm.item"
+                      ng-click="itemClick(cat, itm)"
+                        >
+                    {{itm.title}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
